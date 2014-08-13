@@ -52,11 +52,15 @@ class CrystalSelector(object):
 
     def get_selection(self):
         sel = self.get_offset()
+        if sel < 0 or sel >= len(self.crystals):
+            return None
         crystal = self.crystals[sel]
         return crystal
 
     def remove_selection(self):
         sel = self.get_offset()
+        if sel < 0 or sel >= len(self.crystals):
+            return None
         self.crystals.pop(sel)
         return sel
 

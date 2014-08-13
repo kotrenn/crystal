@@ -2,7 +2,6 @@ import math
 import pygame
 import random
 
-from render import *
 from vector import *
 
 class Crystal(object):
@@ -63,17 +62,3 @@ class Crystal(object):
 
     def __str__(self):
         return str(self.color) + ': ' + str(self.pipes)
-
-class CrystalDisplay(object):
-    def __init__(self):
-        return
-
-    def display(self, dst, crystal, corner):
-        if crystal is None:
-            return
-            
-        data = ''
-        for (k, v) in crystal.atts.iteritems():
-            data += str(k) + ': ' + str(v) + '\n'
-        color = crystal.color
-        draw_string(dst, data, corner, color)

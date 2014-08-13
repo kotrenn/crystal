@@ -1,9 +1,9 @@
-from buymenu import *
+from crystalshop import *
 from inventorymenu import *
 from menu import *
 from spell import *
+from spelleditor import *
 from worldwindow import *
-from crystalshop import *
 
 class MainMenu(Menu):
     def __init__(self, player):
@@ -16,7 +16,6 @@ class MainMenu(Menu):
         if msg == 'Quit':
             self.exit()
         elif msg == 'Buy Stuff':
-            #self.child = BuyMenu(self, self.player)
             self.child = CrystalShop(self, self.player)
         elif msg == 'Inventory':
             self.child = InventoryMenu(self, self.player)

@@ -1,4 +1,4 @@
-from gridviewer import *
+from hexgridviewer import *
 from spell import *
 
 class SpellViewer(Window):

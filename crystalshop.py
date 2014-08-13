@@ -1,6 +1,7 @@
 import pygame
 
 from crystal import *
+from crystaldisplay import *
 from crystalselector import *
 from window import *
 
@@ -18,8 +19,9 @@ class CrystalShop(Window):
         if key == pygame.K_x or key == pygame.K_SPACE or key == pygame.K_RETURN:
             selector = self.selector
             crystal = selector.get_selection()
-            selector.remove_selection()
-            self.player.crystals.append(crystal)
+            if crystal is not None:
+                selector.remove_selection()
+                self.player.crystals.append(crystal)
 
     def display(self, dst):
         Window.display(self, dst)
@@ -29,5 +31,6 @@ class CrystalShop(Window):
         self.selector.display(dst, corner, radius)
 
         crystal = self.selector.get_selection()
-        corner = vector(80, 300)
-        self.crystal_display.display(dst, crystal, corner)
+        if crystal is not None:
+            corner = vector(80, 300)
+            self.crystal_display.display(dst, crystal, corner)
