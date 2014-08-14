@@ -2,13 +2,13 @@ from crystalshop import *
 from inventorymenu import *
 from menu import *
 from spell import *
-from spelleditor import *
+from spellmenu import *
 from worldwindow import *
 
 class MainMenu(Menu):
     def __init__(self, player):
         Menu.__init__(self, None,
-                      ['Buy Crystals', 'Inventory', 'Explore', 'Upgrade', 'Spell Grid', 'Quit'])
+                      ['Buy Crystals', 'Inventory', 'Explore', 'Upgrade', 'Spells', 'Quit'])
         self.image = pygame.image.load('splash.png')
         self.player = player
 
@@ -21,10 +21,8 @@ class MainMenu(Menu):
             self.child = InventoryMenu(self, self.player)
         elif msg == 'Explore':
             self.child = WorldWindow(self)
-        elif msg == 'Spell Grid':
-            spell = Spell(self.player)
-            editor = SpellEditor(self, spell)
-            self.child = editor
+        elif msg == 'Spells':
+            self.child = SpellMenu(self, self.player)
 
     def render_image(self):
         return self.image

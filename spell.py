@@ -7,9 +7,10 @@ from window import *
 from vector import *
 
 class Spell(object):
-    def __init__(self, player):
+    def __init__(self, player, size):
         self.player = player
-        self.grid = HexGrid(4)
+        self.size = size
+        self.grid = HexGrid(size)
 
         start = self.get_source_locs()
         colors = ((255, 0, 0), (0, 255, 0), (0, 0, 255))
@@ -23,12 +24,6 @@ class Spell(object):
             for _ in range(3 - i):
                 crystal.rotate(1)
             self.grid.cells[row][col] = crystal
-
-        for _ in range(10):
-            row = random.randint(1, self.grid.num_rows()) - 1
-            col = random.randint(1, self.grid.num_cols(row)) - 1
-            if self.grid.cells[row][col] is None:
-                self.grid.cells[row][col] = Crystal()
 
     def get_source_locs(self):
         grid = self.grid
