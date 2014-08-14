@@ -8,14 +8,14 @@ from worldwindow import *
 class MainMenu(Menu):
     def __init__(self, player):
         Menu.__init__(self, None,
-                      ['Buy Stuff', 'Inventory', 'Explore', 'Upgrade', 'Spell Grid', 'Quit'])
+                      ['Buy Crystals', 'Inventory', 'Explore', 'Upgrade', 'Spell Grid', 'Quit'])
         self.image = pygame.image.load('splash.png')
         self.player = player
 
     def select(self, msg):
         if msg == 'Quit':
             self.exit()
-        elif msg == 'Buy Stuff':
+        elif msg == 'Buy Crystals':
             self.child = CrystalShop(self, self.player)
         elif msg == 'Inventory':
             self.child = InventoryMenu(self, self.player)

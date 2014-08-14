@@ -1,3 +1,4 @@
+from crystaldisplay import *
 from hexgridviewer import *
 from spell import *
 
@@ -6,8 +7,10 @@ class SpellViewer(Window):
         Window.__init__(self, parent)
         self.spell = spell
         self.grid_viewer = HexGridViewer(self.spell.grid)
+        self.crystal_display = CrystalDisplay()
 
     def display(self, dst):
+        # draw the grid
         self.grid_viewer.display(dst)
 
         # draw every crystal
@@ -16,10 +19,11 @@ class SpellViewer(Window):
         for row in range(grid.num_rows()):
             for col in range(grid.num_cols(row)):
                 crystal = grid.cells[row][col]
-                if crystal is not None:
-                    center = grid_viewer.get_center((row, col))
-                    radius = 0.25 * grid_viewer.cell_w
-                    crystal.display(dst, center, radius)
+                if crystal is None:
+                    continue
+                center = grid_viewer.get_center((row, col))
+                radius = 0.25 * grid_viewer.cell_w
+                crystal.display(dst, center, radius)
                     
         # draw path stuff
         grid = grid_viewer.grid

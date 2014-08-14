@@ -54,18 +54,38 @@ class Spell(object):
             row1, col1 = cur
             if cur.list() in visited:
                 cycle = True
-            else:
-                visited.append(cur.list())
-                c1 = grid.cells[row1][col1]
-                neighbors = []
-                for dir in dirs:
-                    loc = grid.move_loc(dir, cur)
-                    if not grid.out_of_bounds(loc):
-                        row2, col2 = loc
-                        c2 = grid.cells[row2][col2]
-                        if c2 is not None:
-                            if c1.pipes[dir] == 'Out' and \
-                               c2.pipes[(dir + 3) % 6] == 'In':
-                                edges.append((cur, loc))
-                                q.append(loc)
+                continue
+            visited.append(cur.list())
+            c1 = grid.cells[row1][col1]
+            neighbors = []
+            for dir in dirs:
+                loc = grid.move_loc(dir, cur)
+                if grid.out_of_bounds(loc):
+                    continue
+                row2, col2 = loc
+                c2 = grid.cells[row2][col2]
+                if c2 is None:
+                    continue
+                if c1.pipes[dir] == 'Out' and \
+                   c2.pipes[(dir + 3) % 6] == 'In':
+                    edges.append((cur, loc))
+                    q.append(loc)
         return edges, cycle
+
+    def get_atts(self):
+        ret = ''
+        start = self.get_source_locs()
+        for loc in start:
+            edges, cycle = self.get_bfs(loc)
+            if cycle:
+                continue
+            forbidden = ['Movable', 'Source']
+            for (u, v) in edges:
+                row, col = v.list()
+                crystal = self.grid.cells[row][col]
+                for (att, val) in crystal.atts.iteritems():
+                    if att in forbidden:
+                        continue
+                    ret += str(att) + ': ' + str(val) + '\n'
+        return ret
+            

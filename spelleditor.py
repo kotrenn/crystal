@@ -107,6 +107,17 @@ class SpellEditor(SpellViewer):
             self.grid_viewer.draw_hex(dst, self.prev_select, dims, red)
 
         # draw crystal selections
-        corner = vector(30, 500)
+        corner = vector(30, 400)
         radius = 0.25 * self.grid_viewer.cell_w
         self.crystal_selector.display(dst, corner, radius)
+
+        # draw current crystal info
+        crystal = self.crystal_selector.get_selection()
+        if crystal is not None:
+            corner = vector(400, 400)
+            self.crystal_display.display(dst, crystal, corner)
+
+        atts = self.spell.get_atts()
+        corner = vector(600, 400)
+        color = (255, 255, 255)
+        draw_string(dst, atts, corner, color)
