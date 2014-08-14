@@ -28,31 +28,32 @@ class Crystal(object):
 
         # draw the pipes
         for (i, pipe) in enumerate(self.pipes):
-            if pipe is not None:
-                # draw the pipe segment
-                offset = i - 2
-                theta = offset * 2.0 * math.pi / len(self.pipes)
-                t = vector(math.cos(theta), math.sin(theta))
-                #radius = 25
-                r = 1.7 * radius
-                p0 = center
-                p1 = center + r * t
-                pygame.draw.line(dst, self.color,
-                                 p0.list(), p1.list())
-
-                # draw the arrowhead
-                r1 = 0.7 * r
-                r2 = 0.8 * r
-                if pipe == 'Out':
-                    r1, r2 = r2, r1
-                phi = 5
-                p0 = center + r1 * t
-                p1 = center + (r2 * t).rotate(-phi)
-                p2 = center + (r2 * t).rotate(phi)
-                pygame.draw.line(dst, self.color,
-                                 p0.list(), p1.list())
-                pygame.draw.line(dst, self.color,
-                                 p0.list(), p2.list())
+            if pipe is None:
+                continue
+            # draw the pipe segment
+            offset = i - 2
+            theta = offset * 2.0 * math.pi / len(self.pipes)
+            t = vector(math.cos(theta), math.sin(theta))
+            #radius = 25
+            r = 1.7 * radius
+            p0 = center
+            p1 = center + r * t
+            pygame.draw.line(dst, self.color,
+                             p0.list(), p1.list())
+            
+            # draw the arrowhead
+            r1 = 0.7 * r
+            r2 = 0.8 * r
+            if pipe == 'Out':
+                r1, r2 = r2, r1
+            phi = 5
+            p0 = center + r1 * t
+            p1 = center + (r2 * t).rotate(-phi)
+            p2 = center + (r2 * t).rotate(phi)
+            pygame.draw.line(dst, self.color,
+                             p0.list(), p1.list())
+            pygame.draw.line(dst, self.color,
+                             p0.list(), p2.list())
 
     def rotate(self, vel):
         if vel < 0:

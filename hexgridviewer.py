@@ -36,6 +36,7 @@ class HexGridViewer(object):
                   (-0.5, 0.25), (-0.5, -0.25)]
         center = self.get_center(loc)
         final = []
+        shift = []
         for p in points:
             pos = vector(p)
             point = center + pos % dims

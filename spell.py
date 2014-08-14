@@ -73,7 +73,8 @@ class Spell(object):
         return edges, cycle
 
     def get_atts(self):
-        ret = ''
+        modifiers = ['Fire', 'Ice', 'Heal', 'Lightning']
+        modifiers = {x: 0 for x in modifiers}
         start = self.get_source_locs()
         for loc in start:
             edges, cycle = self.get_bfs(loc)
@@ -86,6 +87,13 @@ class Spell(object):
                 for (att, val) in crystal.atts.iteritems():
                     if att in forbidden:
                         continue
-                    ret += str(att) + ': ' + str(val) + '\n'
+                    if att in modifiers:
+                        modifiers[att] += int(val)
+                    #ret += str(att) + ': ' + str(val) + '\n'
+        ret = ''
+        for (mod, val) in modifiers.iteritems():
+            if val == 0:
+                continue
+            ret += str(mod) + ': {:+d}\n'.format(val)
         return ret
             
