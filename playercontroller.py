@@ -1,9 +1,10 @@
 from squaregrid import *
 
 class PlayerController(object):
-    def __init__(self, parent, player):
+    def __init__(self, parent, player, world):
         self.player = player
         self.parent = parent
+        self.world = world
         parent.add_key_listener(self)
 
     def key_pressed(self, key):
@@ -30,7 +31,12 @@ class PlayerController(object):
         new_loc = None
         if dir is not None:
             new_loc = grid.move_loc(dir, self.player.loc)
+            blocked = False
             if grid.out_of_bounds(new_loc):
+                blocked = True
+            elif self.world.is_blocked(new_loc):
+                blocked = True
+            if blocked:
                 new_loc = None
 
         if new_loc is not None:

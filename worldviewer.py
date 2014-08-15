@@ -19,7 +19,7 @@ class WorldViewer(Window):
         self.tiles = {k: vector(v) for (k, v) in self.tiles.iteritems()}
         self.tile_sheet = pygame.image.load('tiles.png')
         self.player = player
-        self.player_controller = PlayerController(self, player)
+        self.player_controller = PlayerController(self, player, self)
 
         self.grid = SquareGrid(self.dims)
         self.grid_viewer = SquareGridViewer(self.grid, self.tile_size)
@@ -29,6 +29,16 @@ class WorldViewer(Window):
                     self.grid.cells[row][col] = self.tiles['tree']
                 else:
                     self.grid.cells[row][col] = self.tiles['blank']
+
+    def is_blocked(self, loc):
+        row = loc[0]
+        col = loc[1]
+        walls = ['tree']
+        tile = self.grid.cells[row][col]
+        for wall in walls:
+            if self.tiles[wall] == tile:
+                return True
+        return False
 
     def display(self, dst):
         self.grid_viewer.display(dst)
