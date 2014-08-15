@@ -4,7 +4,7 @@ class SpellCaster(object):
         self.player = player
         self.spell = spell
 
-    def csat(self):
+    def cast(self):
         mana = self.spell.get_mana_cost()
         if not self.player.has_mana(mana):
             return

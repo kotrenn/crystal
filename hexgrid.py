@@ -3,13 +3,13 @@ import pygame
 
 from vector import *
 
-DIR_NW = 0
-DIR_NE = 1
-DIR_E = 2
-DIR_SE = 3
-DIR_SW = 4
-DIR_W = 5
-NUM_DIRS = 6
+HEX_NW = 0
+HEX_NE = 1
+HEX_E = 2
+HEX_SE = 3
+HEX_SW = 4
+HEX_W = 5
+HEX_NUM_DIRS = 6
 
 class HexGrid(object):
     def __init__(self, size):
@@ -33,29 +33,29 @@ class HexGrid(object):
     def dir_vel(self, dir, loc):
         mid = self.size - 1
         upper = {
-            DIR_NW: [-1, -1],
-            DIR_NE: [-1, 0],
-            DIR_E: [0, 1],
-            DIR_SE: [1, 1],
-            DIR_SW: [1, 0],
-            DIR_W: [0, -1]
-            }
+            HEX_NW: [-1, -1],
+            HEX_NE: [-1, 0],
+            HEX_E: [0, 1],
+            HEX_SE: [1, 1],
+            HEX_SW: [1, 0],
+            HEX_W: [0, -1]
+        }
         lower = {
-            DIR_NW: [-1, 0],
-            DIR_NE: [-1, 1],
-            DIR_E: [0, 1],
-            DIR_SE: [1, 0],
-            DIR_SW: [1, -1],
-            DIR_W: [0, -1]
-            }
+            HEX_NW: [-1, 0],
+            HEX_NE: [-1, 1],
+            HEX_E: [0, 1],
+            HEX_SE: [1, 0],
+            HEX_SW: [1, -1],
+            HEX_W: [0, -1]
+        }
         middle = {
-            DIR_NW: [-1, -1],
-            DIR_NE: [-1, 0],
-            DIR_E: [0, 1],
-            DIR_SE: [1, 0],
-            DIR_SW: [1, -1],
-            DIR_W: [0, -1]
-            }
+            HEX_NW: [-1, -1],
+            HEX_NE: [-1, 0],
+            HEX_E: [0, 1],
+            HEX_SE: [1, 0],
+            HEX_SW: [1, -1],
+            HEX_W: [0, -1]
+        }
         if loc[0] < mid:
             ret = upper[dir]
         elif loc[0] > mid:

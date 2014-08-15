@@ -38,7 +38,7 @@ class Spell(object):
         if grid.cells[start[0]][start[1]] is None:
             return [], False
             
-        dirs = [DIR_NW, DIR_NE, DIR_E, DIR_SE, DIR_SW, DIR_W]
+        dirs = [HEX_NW, HEX_NE, HEX_E, HEX_SE, HEX_SW, HEX_W]
         q = [vector(start)]
         edges = []
         visiting = []

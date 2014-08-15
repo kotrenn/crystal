@@ -20,12 +20,9 @@ class HexGridViewer(object):
     def display(self, dst):
         dims = vector(self.cell_w, self.cell_h)
         size = self.grid.size
-        max_row = 2 * size - 1
-        for row in range(max_row):
-            empty = abs(size - 1 - row)
-            num_cols = max_row - empty
-            for col in range(num_cols):
-                white = (255, 255, 255)
+        white = (255, 255, 255)
+        for row in range(self.grid.num_rows()):
+            for col in range(self.grid.num_cols(row)):
                 self.draw_hex(dst, [row, col], dims, white)
 
     def draw_hex(self, dst, loc, dims, color):
@@ -36,7 +33,6 @@ class HexGridViewer(object):
                   (-0.5, 0.25), (-0.5, -0.25)]
         center = self.get_center(loc)
         final = []
-        shift = []
         for p in points:
             pos = vector(p)
             point = center + pos % dims

@@ -16,16 +16,16 @@ class SpellEditor(SpellViewer):
         # movement along the grid
         dir = None
         mapping = {
-            pygame.K_w: DIR_NW,
-            pygame.K_s: DIR_SE,
-            pygame.K_a: DIR_W,
-            pygame.K_d: DIR_E,
-            pygame.K_u: DIR_NW,
-            pygame.K_i: DIR_NE,
-            pygame.K_k: DIR_E,
-            pygame.K_m: DIR_SE,
-            pygame.K_n: DIR_SW,
-            pygame.K_h: DIR_W
+            pygame.K_w: HEX_NW,
+            pygame.K_s: HEX_SE,
+            pygame.K_a: HEX_W,
+            pygame.K_d: HEX_E,
+            pygame.K_u: HEX_NW,
+            pygame.K_i: HEX_NE,
+            pygame.K_k: HEX_E,
+            pygame.K_m: HEX_SE,
+            pygame.K_n: HEX_SW,
+            pygame.K_h: HEX_W
             }
         if key in mapping:
             dir = mapping[key]
