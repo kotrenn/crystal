@@ -1,6 +1,7 @@
 import pygame
 import random
 
+from playercontroller import *
 from squaregrid import *
 from squaregridviewer import *
 from vector import *
@@ -14,10 +15,11 @@ class WorldViewer(Window):
         self.tiles = {
             'blank': [0, 8],
             'tree': [0, 9]
-            }
+        }
         self.tiles = {k: vector(v) for (k, v) in self.tiles.iteritems()}
         self.tile_sheet = pygame.image.load('tiles.png')
         self.player = player
+        self.player_controller = PlayerController(self, player)
 
         self.grid = SquareGrid(self.dims)
         self.grid_viewer = SquareGridViewer(self.grid, self.tile_size)
@@ -40,5 +42,5 @@ class WorldViewer(Window):
                 pos = corner + 32 * vector(col, row)
                 dst.blit(self.tile_sheet, pos.list(), tile_bounds)
 
-        pos = self.player.pos
-        self.player.display(dst, self.grid_viewer.get_center(pos))
+        loc = self.player.loc
+        self.player.display(dst, self.grid_viewer.get_center(loc))

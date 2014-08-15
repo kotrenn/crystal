@@ -26,7 +26,7 @@ class SpellEditor(SpellViewer):
             pygame.K_m: HEX_SE,
             pygame.K_n: HEX_SW,
             pygame.K_h: HEX_W
-            }
+        }
         if key in mapping:
             dir = mapping[key]
             

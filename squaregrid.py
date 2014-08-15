@@ -42,7 +42,7 @@ class SquareGrid(object):
         return vector(ret)
 
     def move_loc(self, dir, loc):
-        vel = self.dir_vel(dir, loc)
+        vel = self.dir_vel(dir)
         return loc + vel
 
     def out_of_bounds(self, loc):

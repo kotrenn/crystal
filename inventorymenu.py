@@ -13,7 +13,7 @@ class InventoryMenu(Menu):
             (255, 0, 0): 'Red',
             (0, 255, 0): 'Green',
             (0, 0, 255): 'Blue'
-            }
+        }
         options = [str(title[k]) + ' x' + str(v) for (k, v) in crystals.iteritems()]
         options += ['Back']
         Menu.__init__(self, parent, options)
