@@ -1,6 +1,7 @@
 import pygame
 import random
 
+from monster import *
 from squaregrid import *
 from vector import *
 
@@ -20,6 +21,9 @@ class World(object):
                     self.grid.cells[row][col] = self.tiles['tree']
                 else:
                     self.grid.cells[row][col] = self.tiles['blank']
+
+        self.actors = [Monster(self) for _ in range(5)]
+        self.countdown = 0
 
     def is_blocked(self, loc):
         if self.grid.out_of_bounds(loc):

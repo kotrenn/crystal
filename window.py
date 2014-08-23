@@ -20,6 +20,9 @@ class Window(object):
         for listener in self.key_listeners:
             listener.key_released(key)
 
+    def update(self):
+        return
+
     def display(self, dst):
         return
 

@@ -26,7 +26,8 @@ def main():
                 window.key_pressed(event.key)
             elif event.type == pygame.KEYUP:
                 window.key_released(event.key)
-        
+
+        window.update()
         screen.fill(black)
         window.display(screen)
         pygame.display.flip()
