@@ -11,6 +11,7 @@ class MainMenu(Menu):
                       ['Buy Crystals', 'Inventory', 'Explore', 'Upgrade', 'Spells', 'Quit'])
         self.image = pygame.image.load('splash.png')
         self.player = player
+        self.world = World()
 
     def select(self, msg):
         if msg == 'Quit':
@@ -20,7 +21,7 @@ class MainMenu(Menu):
         elif msg == 'Inventory':
             self.child = InventoryMenu(self, self.player)
         elif msg == 'Explore':
-            self.child = WorldViewer(self, self.player)
+            self.child = WorldViewer(self, self.world, self.player)
         elif msg == 'Spells':
             self.child = SpellMenu(self, self.player)
 

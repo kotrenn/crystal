@@ -1,52 +1,31 @@
 import pygame
-import random
 
 from playercontroller import *
-from squaregrid import *
 from squaregridviewer import *
 from vector import *
 from window import *
+from world import *
 
 class WorldViewer(Window):
-    def __init__(self, parent, player):
+    def __init__(self, parent, world, player):
         Window.__init__(self, parent)
-        self.dims = vector(12, 17)
+        self.world = world
         self.tile_size = vector(32, 32)
-        self.tiles = {
-            'blank': [0, 8],
-            'tree': [0, 9]
-        }
-        self.tiles = {k: vector(v) for (k, v) in self.tiles.iteritems()}
         self.tile_sheet = pygame.image.load('tiles.png')
         self.player = player
-        self.player_controller = PlayerController(self, player, self)
+        self.player_controller = PlayerController(self, player, world)
 
-        self.grid = SquareGrid(self.dims)
-        self.grid_viewer = SquareGridViewer(self.grid, self.tile_size)
-        for row in range(self.dims[0]):
-            for col in range(self.dims[1]):
-                if random.randint(1, 10) == 1:
-                    self.grid.cells[row][col] = self.tiles['tree']
-                else:
-                    self.grid.cells[row][col] = self.tiles['blank']
-
-    def is_blocked(self, loc):
-        row = loc[0]
-        col = loc[1]
-        walls = ['tree']
-        tile = self.grid.cells[row][col]
-        for wall in walls:
-            if self.tiles[wall] == tile:
-                return True
-        return False
+        self.grid_viewer = SquareGridViewer(self.world.grid,
+                                            self.tile_size)
 
     def display(self, dst):
         self.grid_viewer.display(dst)
         
         corner = vector(0, 0)
-        for row in range(self.grid.num_rows()):
-            for col in range(self.grid.num_cols()):
-                tile = self.grid.cells[row][col]
+        grid = self.world.grid
+        for row in range(grid.num_rows()):
+            for col in range(grid.num_cols()):
+                tile = grid.cells[row][col]
                 tile_bounds = (self.tile_size % tile).list()
                 tile_bounds += self.tile_size.list()
                 pos = corner + 32 * vector(col, row)

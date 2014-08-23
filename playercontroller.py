@@ -23,7 +23,7 @@ class PlayerController(object):
             pygame.K_LEFT: DIR_W,
             pygame.K_RIGHT: DIR_E
         }
-        grid = self.parent.grid
+        grid = self.world.grid
 
         if key in mapping:
             dir = mapping[key]
