@@ -7,6 +7,10 @@ from squaregrid import *
 class Monster(Actor):
     def __init__(self, world):
         Actor.__init__(self, world)
+        if random.randint(1, 3) == 1:
+            self.speed = Energy.MIN_SPEED
+        else:
+            self.speed = Energy.MAX_SPEED
 
     def get_action(self):
         dir = random.choice([DIR_NW, DIR_N,

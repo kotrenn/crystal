@@ -10,17 +10,22 @@ class Explore(Window):
         self.player = player
         self.player_controller = PlayerController(self, player, world)
         self.countdown = 0
+        self.current_actor = 0
+
+    def advance_actor(self):
+        num_actors = len(self.world.actors)
+        self.current_actor = (self.current_actor + 1) % num_actors
 
     def update(self):
-        if self.countdown == 0:
-            for actor in self.world.actors:
+        action = None
+        while action is None:
+            actor = self.world.actors[self.current_actor]
+            if actor.energy.gain(actor.get_speed()):
                 action = actor.get_action()
-                if action is None:
-                    continue
-                action.execute()
-            self.countdown = 5
-        else:
-            self.countdown -= 1
+            else:
+                self.advance_actor()
+        action.execute()
+        self.advance_actor()
         
     def display(self, dst):
         self.world_viewer.display(dst)

@@ -1,3 +1,4 @@
+from energy import *
 from settings import *
 from squaregrid import *
 
@@ -5,6 +6,8 @@ class Actor(object):
     def __init__(self, world):
         self.loc = vector(0, 0)
         self.world = world
+        self.speed = Energy.NORMAL_SPEED
+        self.energy = Energy()
 
     def get_action(self):
         return None
@@ -14,6 +17,9 @@ class Actor(object):
 
     def get_color(self):
         return (255, 255, 255)
+
+    def get_speed(self):
+        return self.speed
 
     def display(self, dst, center):
         settings = Settings()

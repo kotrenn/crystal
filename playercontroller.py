@@ -10,6 +10,7 @@ class PlayerController(object):
     def key_pressed(self, key):
         dir = None
         mapping = {
+            pygame.K_KP5: DIR_NONE,
             pygame.K_KP7: DIR_NW,
             pygame.K_KP8: DIR_N,
             pygame.K_KP9: DIR_NE,
