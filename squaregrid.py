@@ -2,6 +2,7 @@ import pygame
 
 from vector import *
 
+DIR_NONE = -1
 DIR_NW = 0
 DIR_N = 1
 DIR_NE = 2
@@ -29,6 +30,7 @@ class SquareGrid(object):
 
     def dir_vel(self, dir):
         mapping = {
+            DIR_NONE: [0, 0],
             DIR_NW: [-1, -1],
             DIR_N: [-1, 0],
             DIR_NE: [-1, 1],

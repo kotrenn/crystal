@@ -1,9 +1,9 @@
 from crystalshop import *
+from explore import *
 from inventorymenu import *
 from menu import *
 from spell import *
 from spellmenu import *
-from worldviewer import *
 
 class MainMenu(Menu):
     def __init__(self, player):
@@ -21,7 +21,7 @@ class MainMenu(Menu):
         elif msg == 'Inventory':
             self.child = InventoryMenu(self, self.player)
         elif msg == 'Explore':
-            self.child = WorldViewer(self, self.world, self.player)
+            self.child = Explore(self, self.world, self.player)
         elif msg == 'Spells':
             self.child = SpellMenu(self, self.player)
 
