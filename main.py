@@ -14,7 +14,7 @@ def main():
     global_font = pygame.font.Font(pygame.font.get_default_font(),
                                    settings.FONT_SIZE)
 
-    player = Player()
+    player = Player(None)
     window = MainMenu(player)
 
     running = True

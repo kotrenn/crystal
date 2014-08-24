@@ -8,8 +8,8 @@ class Explore(Window):
         self.world = world
         self.world_viewer = WorldViewer(world)
         self.player = player
+        self.player.set_world(world)
         self.player_controller = PlayerController(self, player, world)
-        self.countdown = 0
         self.current_actor = 0
 
     def advance_actor(self):
@@ -20,7 +20,12 @@ class Explore(Window):
         action = None
         while action is None:
             actor = self.world.actors[self.current_actor]
-            if actor.energy.gain(actor.get_speed()):
+            if actor.energy.can_take_turn() and actor.needs_input():
+                return
+            if actor.energy.can_take_turn() or \
+               actor.energy.gain(actor.get_speed()):
+                if actor.needs_input():
+                    return
                 action = actor.get_action()
             else:
                 self.advance_actor()

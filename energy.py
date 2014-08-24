@@ -17,9 +17,12 @@ class Energy(object):
     def __init__(self):
         self.energy = 0
 
-    def gain(self, speed):
-        self.energy += speed
+    def can_take_turn(self):
         return self.energy >= Energy.ACTION_COST
+
+    def gain(self, speed):
+        self.energy += Energy.GAINS[speed]
+        return self.can_take_turn()
 
     def spend(self):
         energy %= Energy.ACTION_COST

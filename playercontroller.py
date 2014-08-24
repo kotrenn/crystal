@@ -1,3 +1,4 @@
+from action import *
 from squaregrid import *
 
 class PlayerController(object):
@@ -28,20 +29,22 @@ class PlayerController(object):
 
         if key in mapping:
             dir = mapping[key]
+            vel = grid.dir_vel(dir)
+            self.player.next_action = WalkAction(self.player, vel)
 
-        new_loc = None
-        if dir is not None:
-            new_loc = grid.move_loc(dir, self.player.loc)
-            blocked = False
-            if grid.out_of_bounds(new_loc):
-                blocked = True
-            elif self.world.is_blocked(new_loc):
-                blocked = True
-            if blocked:
-                new_loc = None
+        # new_loc = None
+        # if dir is not None:
+        #     new_loc = grid.move_loc(dir, self.player.loc)
+        #     blocked = False
+        #     if grid.out_of_bounds(new_loc):
+        #         blocked = True
+        #     elif self.world.is_blocked(new_loc):
+        #         blocked = True
+        #     if blocked:
+        #         new_loc = None
 
-        if new_loc is not None:
-            self.player.loc = new_loc
-
+        # if new_loc is not None:
+        #     self.player.loc = new_loc
+        
     def key_released(self, key):
         return

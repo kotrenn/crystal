@@ -9,6 +9,14 @@ class Actor(object):
         self.speed = Energy.NORMAL_SPEED
         self.energy = Energy()
 
+    def set_world(self, world):
+        self.world = world
+        if self not in self.world.actors:
+            self.world.actors.append(self)
+
+    def needs_input(self):
+        return False
+
     def get_action(self):
         return None
 
