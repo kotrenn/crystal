@@ -52,3 +52,16 @@ class SquareGrid(object):
         return row < 0 or col < 0 or \
             row >= self.num_rows() or \
             col >= self.num_cols()
+
+    def a_star(self, src, dst):
+        # currently just dijkstra's
+        dirs = [DIR_NW, DIR_N, DIR_NE, DIR_E,
+                DIR_SE, DIR_S, DIR_SW, DIR_W]
+        q = [(DIR_NONE, vector(src))]
+        ret = []
+        done = False
+        finished = []
+        while len(q) > 0 and not done:
+            dir, loc = q.pop(0)
+            if loc.list() in finished:
+                continue

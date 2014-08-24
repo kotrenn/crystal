@@ -17,6 +17,9 @@ class vector(object):
     def __str__(self):
         return str(self.v)
 
+    def __eq__(self, v):
+        return all([a == b for a, b in zip(self.v, v.v)])
+
     def __add__(self, v):
         return vector([a + b for a, b in zip(self.v, v.v)])
 
@@ -43,6 +46,9 @@ class vector(object):
 
     def norm(self):
         return self / self.mag()
+
+    def abs(self):
+        return vector([abs(x) for x in self.v])
 
     def __setitem__(self, i, x):
         self.v[i] = x

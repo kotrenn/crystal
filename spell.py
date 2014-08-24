@@ -41,7 +41,6 @@ class Spell(object):
         dirs = [HEX_NW, HEX_NE, HEX_E, HEX_SE, HEX_SW, HEX_W]
         q = [vector(start)]
         edges = []
-        visiting = []
         visited = []
         cycle = False
         while len(q) > 0:
