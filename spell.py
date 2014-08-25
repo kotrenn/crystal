@@ -14,8 +14,11 @@ class Spell(object):
         self.grid = HexGrid(size)
 
         start = self.get_source_locs()
-        colors = ((255, 0, 0), (0, 255, 0), (0, 0, 255))
+        colors = ((True, False, False),
+                  (False, True, False),
+                  (False, False, True))
         for (i, (loc, color)) in enumerate(zip(start, colors)):
+            color = Color(*color)
             row, col = loc.list()
             crystal = Crystal()
             crystal.color = color
@@ -60,6 +63,8 @@ class Spell(object):
                 row2, col2 = loc
                 c2 = grid.cells[row2][col2]
                 if c2 is None:
+                    continue
+                if not c1.color <= c2.color:
                     continue
                 if c1.pipes[dir] == 'Out' and \
                    c2.pipes[(dir + 3) % 6] == 'In':

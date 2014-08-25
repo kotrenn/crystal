@@ -21,6 +21,11 @@ class Actor(object):
         if self not in self.world.actors:
             self.world.actors.append(self)
 
+    def has_class(self, class_name):
+        classes = str(type.mro(type(self)))
+        modified_name = "." + class_name + "'"
+        return modified_name in classes
+
     def needs_input(self):
         return False
 

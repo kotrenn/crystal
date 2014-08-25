@@ -14,8 +14,7 @@ class Projectile(Actor):
 
         target = self.world.actor_at(self.loc)
         if target is not None:
-            classes = str(type.mro(type(target)))
-            if ".Monster'" in classes:
+            if target.has_class('Monster'):
                 action = self.default_attack(target)
                 action.execute()
 

@@ -9,9 +9,8 @@ class AttackAction(Action):
     def execute(self):
         if self.data is None:
             return 0
-        
-        classes = str(type.mro(type(self.target)))
-        if ".Monster'" in classes:
+
+        if self.target.has_class('Monster'):
             pain = self.data.compute_damage(self.target)
             self.target.take_damage(pain)
         return self.actor

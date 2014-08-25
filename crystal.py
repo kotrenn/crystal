@@ -2,13 +2,15 @@ import math
 import pygame
 import random
 
+from color import *
 from vector import *
 
 class Crystal(object):
     def __init__(self):
-        self.color = random.choice([(255, 0, 0),
-                                    (0, 255, 0),
-                                    (0, 0, 255)])
+        self.color = Color(False, False, False)
+        self.color[random.randint(0, 2)] = True
+        if random.randint(1, 5) == 1:
+            self.color[random.randint(0, 2)] = True
         self.pipes = [random.choice([True, False]) for _ in range(6)]
         self.pipes = [random.choice(['In', 'Out']) if p else None for p in self.pipes]
         self.atts = {
@@ -16,6 +18,9 @@ class Crystal(object):
         }
 
     def display(self, dst, center, radius):
+        # get rgb tuple for rendering
+        color = self.color.tuple()
+        
         # draw the crystal core
         num_sides = 8
         points = []
@@ -24,7 +29,7 @@ class Crystal(object):
             t = vector(math.cos(theta), math.sin(theta))
             p = center + radius * t
             points.append(p.list())
-        pygame.draw.polygon(dst, self.color, points, 1)
+        pygame.draw.polygon(dst, color, points, 1)
 
         # draw the pipes
         for (i, pipe) in enumerate(self.pipes):
@@ -34,11 +39,10 @@ class Crystal(object):
             offset = i - 2
             theta = offset * 2.0 * math.pi / len(self.pipes)
             t = vector(math.cos(theta), math.sin(theta))
-            #radius = 25
             r = 1.7 * radius
             p0 = center
             p1 = center + r * t
-            pygame.draw.line(dst, self.color,
+            pygame.draw.line(dst, color,
                              p0.list(), p1.list())
             
             # draw the arrowhead
@@ -50,9 +54,9 @@ class Crystal(object):
             p0 = center + r1 * t
             p1 = center + (r2 * t).rotate(-phi)
             p2 = center + (r2 * t).rotate(phi)
-            pygame.draw.line(dst, self.color,
+            pygame.draw.line(dst, color,
                              p0.list(), p1.list())
-            pygame.draw.line(dst, self.color,
+            pygame.draw.line(dst, color,
                              p0.list(), p2.list())
 
     def rotate(self, vel):
