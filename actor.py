@@ -27,6 +27,12 @@ class Actor(object):
         modified_name = "." + class_name + "'"
         return modified_name in classes
 
+    def update(self):
+        return
+
+    def heal(self, hp):
+        self.hp.add(hp)
+
     def get_mana(self):
         return Color()
 

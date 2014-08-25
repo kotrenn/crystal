@@ -24,4 +24,6 @@ class CastSpellAction(Action):
         if 'Melee' in data.atts['Cast']:
             instant = True
         self.actor.burn_mana(mana)
+        if 'Heal' in data.atts:
+            self.actor.heal(data.atts['Heal'])
         projectile = Projectile(world, start, self.dir, data, instant)

@@ -37,4 +37,4 @@ class SpellViewer(Window):
             for (u, v) in edges:
                 c0 = grid_viewer.get_center(u)
                 c1 = grid_viewer.get_center(v)
-                pygame.draw.line(dst, color, c0.list(), c1.list())
+                pygame.draw.line(dst, color, c0.list(), c1.list(), 3)

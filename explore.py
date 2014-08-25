@@ -22,6 +22,7 @@ class Explore(Window):
 
     def update(self):
         action = None
+        actor = None
         while action is None:
             actor = self.world.actors[self.current_actor]
             if actor.energy.can_take_turn() and actor.needs_input():
@@ -35,6 +36,7 @@ class Explore(Window):
             else:
                 self.advance_actor()
         action.execute()
+        actor.update()
         self.advance_actor()
         
     def display(self, dst):
