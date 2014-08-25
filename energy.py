@@ -25,4 +25,4 @@ class Energy(object):
         return self.can_take_turn()
 
     def spend(self):
-        energy %= Energy.ACTION_COST
+        self.energy %= Energy.ACTION_COST

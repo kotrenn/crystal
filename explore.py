@@ -29,6 +29,7 @@ class Explore(Window):
                 if actor.needs_input():
                     return
                 action = actor.get_action()
+                actor.energy.spend()
             else:
                 self.advance_actor()
         action.execute()
