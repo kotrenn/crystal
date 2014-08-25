@@ -59,3 +59,38 @@ class Explore(Window):
             actor_str = actor.name + ' ' + str(actor.hp)
             color = actor.get_color()
             draw_string(dst, actor_str, text_pos, color)
+
+        # draw the player info
+        player = self.player
+        player_controller = self.player_controller
+        dims = vector(0, self.world.grid.num_rows())
+        text_offset = dims % self.world_viewer.tile_size
+        text_offset += vector(20, 20)
+        white = (255, 255, 255)
+        red = (255, 0, 0)
+        green = (0, 255, 0)
+        blue = (0, 0, 255)
+        colors = [white, red, green, blue]
+        player_str = ''
+        player_str += 'HP: ' + str(player.hp) + '\n'
+        for mana in player.mana:
+            player_str += 'MP: ' + str(mana) + '\n'
+        draw_string(dst, player_str, text_offset, colors)
+
+        # draw player spells
+        text_offset += vector(150, 0)
+        gray = (127, 127, 127)
+        spell_list = ''
+        for (i, spell) in enumerate(player.spells):
+            spell_str = 'Spell ' + str(i + 1)
+            spell_str += ' (' + str(spell.size) + ')\n'
+            spell_list += spell_str
+        colors = [gray for _ in range(len(player.spells))]
+        colors[player_controller.spell_selection] = white
+        draw_string(dst, spell_list, text_offset, colors)
+
+        # draw current spell info
+        text_offset += vector(150, 0)
+        spell = player.spells[player_controller.spell_selection]
+        att_list = spell.get_atts()
+        draw_string(dst, att_list, text_offset, white)

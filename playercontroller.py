@@ -9,10 +9,21 @@ class PlayerController(object):
         self.world = world
         parent.add_key_listener(self)
         self.spell_select = False
+        self.spell_selection = 0
 
     def key_pressed(self, key):
         if key == pygame.K_s:
             self.spell_select = not self.spell_select
+            return
+
+        mapping = {
+            pygame.K_q: -1,
+            pygame.K_w: 1
+        }
+        if key in mapping:
+            vel = mapping[key]
+            self.spell_selection = (self.spell_selection + vel)
+            self.spell_selection %= len(self.player.spells)
             return
         
         dir = None
@@ -41,7 +52,8 @@ class PlayerController(object):
                     return
                 self.spell_select = False
                 spells = self.player.spells
-                action = CastSpellAction(self.player, spells[0], dir)
+                spell = spells[self.spell_selection]
+                action = CastSpellAction(self.player, spell, dir)
             else:
                 action = WalkAction(self.player, dir)
             self.player.next_action = action
