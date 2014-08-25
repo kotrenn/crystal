@@ -1,6 +1,6 @@
 import pygame
 
-from action import *
+from attackaction import *
 from actor import *
 from spell import *
 from vector import *

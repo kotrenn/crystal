@@ -1,5 +1,6 @@
-from action import *
+from castspellaction import *
 from squaregrid import *
+from walkaction import *
 
 class PlayerController(object):
     def __init__(self, parent, player, world):

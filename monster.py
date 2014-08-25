@@ -1,8 +1,9 @@
 import random
 
-from action import *
 from actor import *
+from attackaction import *
 from squaregrid import *
+from walkaction import *
 
 class Monster(Actor):
     def __init__(self, world):

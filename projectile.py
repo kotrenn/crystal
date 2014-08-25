@@ -1,7 +1,7 @@
-from action import *
 from actor import *
+from attackaction import *
 from energy import *
-import action
+from walkaction import *
 
 class Projectile(Actor):
     def __init__(self, world, loc, dir):
@@ -11,7 +11,7 @@ class Projectile(Actor):
         self.speed = Energy.MAX_SPEED
 
     def get_action(self):
-        return action.WalkAction(self, self.dir)
+        return WalkAction(self, self.dir)
 
     def get_symbol(self):
         return '*'
@@ -20,5 +20,5 @@ class Projectile(Actor):
         return (0, 0, 255)
 
     def default_attack(self, target):
-        return action.AttackAction(self, target)
+        return AttackAction(self, target)
     
