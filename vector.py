@@ -69,6 +69,10 @@ class vector(object):
     def __getitem__(self, i):
         return self.v[i]
 
+    # swap x and y coordinates
+    def transpose(self):
+        return vector(self.v[1], self.v[0])
+
     # convert to a list
     def list(self):
         return list(self.v)

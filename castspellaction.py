@@ -14,4 +14,5 @@ class CastSpellAction(Action):
         start = loc + vel
         if world.is_blocked(start):
             return
-        projectile = Projectile(world, start, self.dir)
+        data = self.spell.get_attack()
+        projectile = Projectile(world, start, self.dir, data)

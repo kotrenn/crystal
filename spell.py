@@ -1,5 +1,6 @@
 import random
 
+from attackdata import *
 from crystal import *
 from crystalselector import *
 from hexgrid import *
@@ -66,7 +67,7 @@ class Spell(object):
                     q.append(loc)
         return edges, cycle
 
-    def get_atts(self):
+    def get_modifiers(self):
         modifiers = ['Fire', 'Ice', 'Heal', 'Lightning']
         modifiers = {x: 0 for x in modifiers}
         start = self.get_source_locs()
@@ -83,11 +84,18 @@ class Spell(object):
                         continue
                     if att in modifiers:
                         modifiers[att] += int(val)
-                    #ret += str(att) + ': ' + str(val) + '\n'
+        return modifiers
+
+    def get_atts(self):
         ret = ''
+        modifiers = self.get_modifiers()
         for (mod, val) in modifiers.iteritems():
             if val == 0:
                 continue
             ret += str(mod) + ': {:+d}\n'.format(val)
         return ret
             
+    def get_attack(self):
+        data = AttackData()
+        data.atts = self.get_modifiers()
+        return data

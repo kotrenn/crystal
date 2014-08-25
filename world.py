@@ -55,7 +55,7 @@ class World(object):
                 return actor
         return None
 
-    def random_open(self):
+    def random_empty(self):
         done = False
         loc = vector(0, 0)
         while not done:

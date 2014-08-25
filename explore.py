@@ -1,4 +1,6 @@
 from playercontroller import *
+from render import *
+from settings import *
 from window import *
 from worldviewer import *
 from world import *
@@ -38,7 +40,22 @@ class Explore(Window):
     def display(self, dst):
         self.world_viewer.display(dst)
 
-        for actor in self.world.actors:
+        # compute offset for the actor list
+        settings = Settings()
+        dims = vector(self.world.grid.num_cols(), 0)
+        text_offset = dims % self.world_viewer.tile_size
+        text_offset += vector(20, 0)
+
+        # draw actors and their info
+        for (i, actor) in enumerate(self.world.actors):
+            # draw the actor
             loc = actor.loc
             pos = self.world_viewer.grid_viewer.get_center(loc)
             actor.display(dst, pos)
+
+            # draw actor info
+            text_pos = settings.FONT_SIZE * vector(0, i)
+            text_pos += text_offset
+            actor_str = actor.name + ' ' + str(actor.hp)
+            color = actor.get_color()
+            draw_string(dst, actor_str, text_pos, color)

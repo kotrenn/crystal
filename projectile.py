@@ -4,11 +4,12 @@ from energy import *
 from walkaction import *
 
 class Projectile(Actor):
-    def __init__(self, world, loc, dir):
+    def __init__(self, world, loc, dir, data):
         Actor.__init__(self, world)
         self.loc = loc
         self.dir = dir
         self.speed = Energy.MAX_SPEED
+        self.data = data
         self.die_at_wall = True
 
         target = self.world.actor_at(self.loc)
@@ -29,5 +30,5 @@ class Projectile(Actor):
 
     def default_attack(self, target):
         self.world.remove_actor(self)
-        return AttackAction(self, target)
+        return AttackAction(self, target, self.data)
     

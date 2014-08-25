@@ -2,6 +2,7 @@ import random
 
 from actor import *
 from attackaction import *
+from gamestat import *
 from squaregrid import *
 from walkaction import *
 
@@ -12,6 +13,7 @@ class Monster(Actor):
             self.speed = Energy.MIN_SPEED
         else:
             self.speed = Energy.MAX_SPEED
+        self.hp = GameStat(10)
 
     def get_action(self):
         dir = self.world.a_star(self.loc, self.world.player.loc)
@@ -26,7 +28,13 @@ class Monster(Actor):
         return WalkAction(self, dir)
 
     def default_attack(self, target):
-        return AttackAction(self, target)
+        return AttackAction(self, target, None)
         
     def get_color(self):
         return (255, 0, 0)
+        
+    def take_damage(self, damage):
+        self.hp.sub(damage)
+        if self.hp.val <= 0:
+            self.hp.reset()
+            self.loc = self.world.random_empty()

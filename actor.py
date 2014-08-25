@@ -1,4 +1,5 @@
 from energy import *
+from gamestat import *
 from settings import *
 from squaregrid import *
 
@@ -10,6 +11,8 @@ class Actor(object):
         self.energy = Energy()
         self.set_world(world)
         self.die_at_wall = False
+        self.name = 'Actor'
+        self.hp = GameStat(0)
 
     def set_world(self, world):
         self.world = world
