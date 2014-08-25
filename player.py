@@ -2,6 +2,7 @@ import pygame
 
 from attackaction import *
 from attackdata import *
+from color import *
 from gamestat import *
 from actor import *
 from spell import *
@@ -27,6 +28,7 @@ class Player(Actor):
         crystal.pipes = ['In'] * 3 + [None] * 3
         crystal.atts['Cast'] = ['Melee']
         crystal.atts['Neutral'] = 1
+        crystal.atts['Mana'] = Color()
         for _ in range(2):
             crystal.rotate(-1)
         basic.grid.cells[row][col] = crystal
@@ -38,6 +40,13 @@ class Player(Actor):
         action = self.next_action
         self.next_action = None
         return action
+
+    def get_mana(self):
+        return Color([x.val for x in self.mana])
+
+    def burn_mana(self, mana_cost):
+        for (mana, cost) in zip(self.mana, mana_cost):
+            mana.sub(cost)
 
     def default_attack(self, target):
         data = AttackData()

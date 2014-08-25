@@ -11,11 +11,14 @@ class Crystal(object):
         self.color[random.randint(0, 2)] = True
         if random.randint(1, 5) == 1:
             self.color[random.randint(0, 2)] = True
+        if random.randint(1, 50) == 1:
+            self.color = Color(True, True, True)
         self.pipes = [random.choice([True, False]) for _ in range(6)]
         self.pipes = [random.choice(['In', 'Out']) if p else None for p in self.pipes]
         self.atts = {
             'Movable': True
         }
+        self.atts['Mana'] = Color([random.randint(0, 2) for _ in range(3)])
         if random.randint(1, 5) == 1:
             self.atts['Cast'] = ['Projectile']
 

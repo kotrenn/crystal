@@ -1,3 +1,4 @@
+from color import *
 from energy import *
 from gamestat import *
 from settings import *
@@ -25,6 +26,12 @@ class Actor(object):
         classes = str(type.mro(type(self)))
         modified_name = "." + class_name + "'"
         return modified_name in classes
+
+    def get_mana(self):
+        return Color()
+
+    def burn_mana(self, mana_cost):
+        return
 
     def needs_input(self):
         return False

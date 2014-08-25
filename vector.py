@@ -5,7 +5,7 @@ dims = 2
 class vector(object):
     def __init__(self, *args):
         if len(args) == 0:
-            self.v = [0] * dims
+            self.v = [0, 0]
         elif len(args) == 1:
             v = args[0]
             self.v = list(v)
@@ -33,7 +33,6 @@ class vector(object):
     def __mul__(self, s):
         return vector([x * s for x in self.v])
 
-    # scalar multiplication
     def __rmul__(self, s):
         return vector([x * s for x in self.v])
 
