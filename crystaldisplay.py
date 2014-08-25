@@ -11,6 +11,9 @@ class CrystalDisplay(object):
             
         data = ''
         for (k, v) in crystal.atts.iteritems():
-            data += str(k) + ': ' + str(v) + '\n'
+            val_str = str(v)
+            if isinstance(v, (int, long)):
+                val_str = '{:+d}'.format(v)
+            data += str(k) + ': ' + val_str + '\n'
         color = crystal.color.tuple()
         draw_string(dst, data, corner, color)

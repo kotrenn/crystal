@@ -16,6 +16,8 @@ class Crystal(object):
         self.atts = {
             'Movable': True
         }
+        if random.randint(1, 5) == 1:
+            self.atts['Cast'] = ['Projectile']
 
     def display(self, dst, center, radius):
         # get rgb tuple for rendering

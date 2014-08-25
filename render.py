@@ -2,6 +2,13 @@ import pygame
 from settings import *
 
 def draw_string(dst, msg, p, colors):
+    # print 'draw_string(['
+    # for line in msg.split('\n'):
+    #     print '             ' + line + ','
+    # print '            ]'
+    # print '            ' + str(p)
+    # print '            ' + str(colors)
+    # print '            )'
     settings = Settings()
     font = settings.font
 

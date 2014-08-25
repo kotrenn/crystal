@@ -1,3 +1,4 @@
+import copy
 import random
 
 from attackdata import *
@@ -81,14 +82,24 @@ class Spell(object):
             if cycle:
                 continue
             forbidden = ['Movable', 'Source']
+            cur_modifiers = {}
             for (u, v) in edges:
                 row, col = v.list()
                 crystal = self.grid.cells[row][col]
                 for (att, val) in crystal.atts.iteritems():
                     if att in forbidden:
                         continue
-                    if att in modifiers:
-                        modifiers[att] += int(val)
+                    if att in cur_modifiers:
+                        cur_modifiers[att] += val
+                    else:
+                        cur_modifiers[att] = copy.deepcopy(val)
+            if 'Cast' not in cur_modifiers:
+                continue
+            for (att, val) in cur_modifiers.iteritems():
+                if att in modifiers:
+                    modifiers[att] += val
+                else:
+                    modifiers[att] = copy.deepcopy(val)
         return modifiers
 
     def get_atts(self):
@@ -97,7 +108,10 @@ class Spell(object):
         for (mod, val) in modifiers.iteritems():
             if val == 0:
                 continue
-            ret += str(mod) + ': {:+d}\n'.format(val)
+            val_str = str(val)
+            if isinstance(val, (int, long)):
+                val_str = '{:+d}'.format(val)
+            ret += str(mod) + ': ' + val_str + '\n'
         return ret
             
     def get_attack(self):

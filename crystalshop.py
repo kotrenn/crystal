@@ -23,8 +23,7 @@ class CrystalShop(Window):
                 mod = random.randint(-5, 3)
                 if mod == 0:
                     continue
-                val = '{:+d}'.format(mod)
-                crystal.atts[ele] = val
+                crystal.atts[ele] = mod
         return crystal
 
     def key_pressed(self, key):
