@@ -23,6 +23,7 @@ class World(object):
                 else:
                     self.grid.cells[row][col] = self.tiles['blank']
 
+        self.actors = []
         self.actors = [Monster(self) for _ in range(5)]
 
     def is_blocked(self, loc):
@@ -37,9 +38,18 @@ class World(object):
                 return True
         return False
 
+    def actor_at(self, loc, source = None):
+        for actor in self.actors:
+            if actor is source:
+                continue
+            if loc == actor.loc:
+                return actor
+        return None
+
     class Node(object):
         FLOOR_COST = 10
         STRAIGHT_COST = 9
+        OCCUPIED_COST = 40
         
         def __init__(self, loc, source_dir, cost, heuristic):
             self.loc = vector(loc)
@@ -105,6 +115,8 @@ class World(object):
                 
                 # compute the cost of moving to this node
                 move_cost = World.Node.FLOOR_COST
+                if self.actor_at(new_loc):
+                    move_cost = World.Node.OCCUPIED_COST
 
                 # set up the new node
                 new_cost = cur.cost + move_cost
