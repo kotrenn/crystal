@@ -29,9 +29,15 @@ class Monster(Actor):
             self.random_dst()
         
         dir = self.world.a_star(self.loc, self.dst)
+        if dir == DIR_NONE:
+            return WalkAction(self, dir)
+
         vel = self.world.grid.dir_vel(dir)
+        new_loc = self.loc + vel
+        if self.world.actor_at(new_loc):
+            return WalkAction(self, DIR_NONE)
         
-        return WalkAction(self, vel)
+        return WalkAction(self, dir)
         
     def get_color(self):
         return (255, 0, 0)

@@ -7,12 +7,13 @@ class Action(object):
         return None
 
 class WalkAction(Action):
-    def __init__(self, actor, vel):
+    def __init__(self, actor, dir):
         Action.__init__(self, actor)
-        self.vel = vel
+        self.dir = dir
 
     def execute(self):
-        loc = self.actor.loc + self.vel
+        vel = self.world.grid.dir_vel(self.dir)
+        loc = self.actor.loc + vel
         if self.world.is_blocked(loc):
             return None
         self.actor.loc = loc

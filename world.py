@@ -23,6 +23,11 @@ class World(object):
                 else:
                     self.grid.cells[row][col] = self.tiles['blank']
 
+        for row in range(self.dims[0]):
+            self.grid.cells[row][0] = self.tiles['blank']
+            self.grid.cells[row][1] = self.tiles['tree']
+        self.grid.cells[self.dims[0] - 1][1] = self.tiles['blank']
+
         self.actors = []
         self.actors = [Monster(self) for _ in range(5)]
 

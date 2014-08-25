@@ -1,0 +1,10 @@
+Actions
+  ProjectileAction
+    Takes a spell and actor (source) as input
+
+Crystals
+  Activators
+    Basic melee
+      Include white crystal for basic attack
+    Surround player with ice crystals
+    Create a projectile to go after nearest enemy

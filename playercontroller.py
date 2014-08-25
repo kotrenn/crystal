@@ -29,8 +29,7 @@ class PlayerController(object):
 
         if key in mapping:
             dir = mapping[key]
-            vel = grid.dir_vel(dir)
-            self.player.next_action = WalkAction(self.player, vel)
+            self.player.next_action = WalkAction(self.player, dir)
         
     def key_released(self, key):
         return
