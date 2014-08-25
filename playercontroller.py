@@ -7,8 +7,13 @@ class PlayerController(object):
         self.parent = parent
         self.world = world
         parent.add_key_listener(self)
+        self.spell_select = False
 
     def key_pressed(self, key):
+        if key == pygame.K_s:
+            self.spell_select = not self.spell_select
+            return
+        
         dir = None
         mapping = {
             pygame.K_KP5: DIR_NONE,
@@ -29,7 +34,15 @@ class PlayerController(object):
 
         if key in mapping:
             dir = mapping[key]
-            action = WalkAction(self.player, dir)
+            action = None
+            if self.spell_select:
+                if dir == DIR_NONE:
+                    return
+                self.spell_select = False
+                spells = self.player.spells
+                action = CastSpellAction(self.player, spells[0], dir)
+            else:
+                action = WalkAction(self.player, dir)
             self.player.next_action = action
         
     def key_released(self, key):

@@ -11,3 +11,6 @@ Crystals
     Burst spell
       Attacks in 3x3, 5x5, ... area around the player
     Burst on hit?
+    Bounces off walls
+      Rotate/flip direction on collision
+    Projectile that allows player to control enemy when hit

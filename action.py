@@ -1,3 +1,5 @@
+from projectile import *
+
 class Action(object):
     def __init__(self, actor):
         self.actor = actor
@@ -32,7 +34,20 @@ class AttackAction(Action):
         self.target = target
 
     def execute(self):
-        name = self.target.__class__.__name__
-        if name == 'Monster':
+        classes = str(type.mro(type(self.target)))
+        if ".Monster'" in classes:
             self.target.loc = self.target.world.random_open()
         return self.actor
+
+class CastSpellAction(Action):
+    def __init__(self, actor, spell, dir):
+        Action.__init__(self, actor)
+        self.spell = spell
+        self.dir = dir
+
+    def execute(self):
+        world = self.actor.world
+        loc = self.actor.loc
+        vel = world.grid.dir_vel(self.dir)
+        projectile = Projectile(world, loc + vel, self.dir)
+        projectile.set_world(world)
