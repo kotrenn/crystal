@@ -73,6 +73,10 @@ class vector(object):
     def list(self):
         return list(self.v)
 
+    # convert to a tuple
+    def tuple(self):
+        return tuple(self.v)
+
     # rotate about the origin by angle theta (in degrees)
     def rotate(self, theta):
         x, y = self.v

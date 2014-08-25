@@ -1,6 +1,7 @@
 from playercontroller import *
 from window import *
 from worldviewer import *
+from world import *
 
 class Explore(Window):
     def __init__(self, parent, world, player):
@@ -34,10 +35,6 @@ class Explore(Window):
         
     def display(self, dst):
         self.world_viewer.display(dst)
-
-        loc = self.player.loc
-        pos = self.world_viewer.grid_viewer.get_center(loc)
-        self.player.display(dst, pos)
 
         for actor in self.world.actors:
             loc = actor.loc

@@ -15,17 +15,16 @@ class Monster(Actor):
         self.random_dst()
 
     def random_dst(self):
-        dst = [random.randint(0, self.world.dims[0] - 1),
-               random.randint(0, self.world.dims[1] - 1)]
+        done = False
+        dst = vector(0, 0)
+        while not done:
+            dst = [random.randint(0, self.world.dims[0] - 1),
+                   random.randint(0, self.world.dims[1] - 1)]
+            if not self.world.is_blocked(vector(dst)):
+                done = True
         self.dst = vector(dst)
 
     def get_action(self):
-        dir = random.choice([DIR_NW, DIR_N,
-                             DIR_NE, DIR_E,
-                             DIR_SE, DIR_S,
-                             DIR_SW, DIR_W])
-        vel = self.world.grid.dir_vel(dir)
-
         if self.loc == self.dst:
             self.random_dst()
         

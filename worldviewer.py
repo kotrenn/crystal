@@ -22,5 +22,5 @@ class WorldViewer(object):
                 tile = grid.cells[row][col]
                 tile_bounds = (self.tile_size % tile).list()
                 tile_bounds += self.tile_size.list()
-                pos = corner + 32 * vector(col, row)
+                pos = corner + self.tile_size % vector(col, row)
                 dst.blit(self.tile_sheet, pos.list(), tile_bounds)

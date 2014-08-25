@@ -1,3 +1,4 @@
+import bisect
 import pygame
 import random
 
@@ -17,7 +18,7 @@ class World(object):
 
         for row in range(self.dims[0]):
             for col in range(self.dims[1]):
-                if random.randint(1, 10) == 1:
+                if random.randint(1, 10) <= 3:
                     self.grid.cells[row][col] = self.tiles['tree']
                 else:
                     self.grid.cells[row][col] = self.tiles['blank']
@@ -61,34 +62,25 @@ class World(object):
         offset = (dst - loc).abs()
         num_diagonal = min(offset.list())
         num_straight = max(offset.list()) - num_diagonal
-        nums = vector(num_diagonal, num_straight)
-        costs = vector(World.Node.FLOOR_COST,
-                       World.Node.STRAIGHT_COST)
-        return nums ** costs
+        return num_diagonal * World.Node.FLOOR_COST + \
+            num_straight * World.Node.STRAIGHT_COST
 
     def a_star(self, src, dst):
-        # currently just dijkstra's b/c zero heuristic
+        # set up initial stuff
         grid = self.grid
         dirs = [DIR_NW, DIR_N, DIR_NE, DIR_E,
                 DIR_SE, DIR_S, DIR_SW, DIR_W]
-        q = [World.Node(src, DIR_NONE, 0,
-                        self.heuristic(src, dst))]
+        dist = self.heuristic(src, dst)
+        q = [World.Node(src, DIR_NONE, 0, dist)]
+        totals = [dist]
+        finished = set([])
         ret = DIR_NONE
-        finished = []
+
+        # main loop
         while len(q) > 0 and ret == DIR_NONE:
             # find the minimum cost node
-            cur = None
-            off = -1
-            for (i, node) in enumerate(q):
-                closer = False
-                if cur is None:
-                    closer = True
-                elif cur.total() > node.total():
-                    closer = True
-                if closer:
-                    cur = node
-                    off = i
-            q.pop(off)
+            cur = q.pop(0)
+            totals.pop(0)
 
             # check if we've reached the goal
             if cur.loc == dst:
@@ -96,17 +88,13 @@ class World(object):
                 continue
 
             # check if already visited
-            if cur.loc.list() in finished:
+            if cur.loc.tuple() in finished:
                 continue
-            
-            finished.append(cur.loc.list())
+            finished.add(cur.loc.tuple())
 
-            # get neighbors
-            neighbors = []
+            # process neighbors
             for dir in dirs:
                 new_loc = grid.move_loc(dir, cur.loc)
-                if grid.out_of_bounds(new_loc):
-                    continue
                 if self.is_blocked(new_loc):
                     continue
 
@@ -114,12 +102,19 @@ class World(object):
                 new_dir = cur.dir
                 if new_dir == DIR_NONE:
                     new_dir = dir
+                
                 # compute the cost of moving to this node
                 move_cost = World.Node.FLOOR_COST
-                
-                new_cost = cur.cost + move_cost
-                new_node = World.Node(new_loc, new_dir, new_cost,
-                                      self.heuristic(new_loc, dst))
-                q.append(new_node)
 
+                # set up the new node
+                new_cost = cur.cost + move_cost
+                new_heur = self.heuristic(new_loc, dst)
+                new_node = World.Node(new_loc, new_dir,
+                                      new_cost, new_heur)
+
+                # find location of where to insert new_node
+                new_total = new_cost + new_heur
+                off = bisect.bisect_right(totals, new_total)
+                totals.insert(off, new_total)
+                q.insert(off, new_node)
         return ret
