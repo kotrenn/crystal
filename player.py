@@ -18,6 +18,19 @@ class Player(Actor):
             self.spells.append(Spell(self, size))
         self.next_action = None
 
+        # create the initial basic melee spell
+        basic = self.spells[0]
+        color = Color(True, True, True)
+        row, col = 1, 1
+        crystal = Crystal()
+        crystal.color = color
+        crystal.pipes = ['In'] * 3 + [None] * 3
+        crystal.atts['Cast'] = ['Melee']
+        crystal.atts['Neutral'] = 1
+        for _ in range(2):
+            crystal.rotate(-1)
+        basic.grid.cells[row][col] = crystal
+
     def needs_input(self):
         return self.next_action == None
 
@@ -28,5 +41,5 @@ class Player(Actor):
 
     def default_attack(self, target):
         data = AttackData()
-        data.atts['Fire'] = 10
+        data.atts['Neutral'] = 10
         return AttackAction(self, target, data)

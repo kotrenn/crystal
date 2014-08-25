@@ -15,4 +15,9 @@ class CastSpellAction(Action):
         if world.is_blocked(start):
             return
         data = self.spell.get_attack()
-        projectile = Projectile(world, start, self.dir, data)
+        if 'Cast' not in data.atts:
+            return
+        instant = False
+        if 'Melee' in data.atts['Cast']:
+            instant = True
+        projectile = Projectile(world, start, self.dir, data, instant)

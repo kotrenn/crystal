@@ -33,6 +33,8 @@ class World(object):
         self.player = None
 
     def remove_actor(self, actor):
+        if not actor in self.actors:
+            return
         self.actors.remove(actor)
 
     def is_blocked(self, loc):

@@ -29,7 +29,7 @@ class Spell(object):
             for _ in range(3 - i):
                 crystal.rotate(1)
             self.grid.cells[row][col] = crystal
-
+            
     def get_source_locs(self):
         grid = self.grid
         size = grid.size
@@ -74,7 +74,7 @@ class Spell(object):
         return edges, cycle
 
     def get_modifiers(self):
-        modifiers = ['Fire', 'Ice', 'Heal', 'Lightning']
+        modifiers = ['Neutral', 'Fire', 'Ice', 'Heal', 'Lightning']
         modifiers = {x: 0 for x in modifiers}
         start = self.get_source_locs()
         for loc in start:

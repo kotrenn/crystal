@@ -4,7 +4,7 @@ class AttackData(object):
 
     def compute_damage(self, target):
         ret = 0
-        modifiers = ['Fire', 'Ice', 'Lightning']
+        modifiers = ['Neutral', 'Fire', 'Ice', 'Lightning']
         for mod in modifiers:
             if not mod in self.atts:
                 continue

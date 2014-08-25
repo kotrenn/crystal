@@ -17,7 +17,7 @@ class CrystalShop(Window):
     def make_crystal(self):
         crystal = Crystal()
         if random.randint(1, 3) == 1:
-            elements = ['Fire', 'Ice', 'Heal', 'Lightning']
+            elements = ['Neutral', 'Fire', 'Ice', 'Heal', 'Lightning']
             for _ in range(2):
                 ele = random.choice(elements)
                 mod = random.randint(-5, 3)
