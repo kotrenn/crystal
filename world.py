@@ -32,6 +32,9 @@ class World(object):
         self.actors = [Monster(self) for _ in range(5)]
         self.player = None
 
+    def remove_actor(self, actor):
+        self.actors.remove(actor)
+
     def is_blocked(self, loc):
         if self.grid.out_of_bounds(loc):
             return True

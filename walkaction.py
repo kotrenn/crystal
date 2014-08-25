@@ -9,6 +9,8 @@ class WalkAction(Action):
         vel = self.world.grid.dir_vel(self.dir)
         loc = self.actor.loc + vel
         if self.world.is_blocked(loc):
+            if self.actor.die_at_wall:
+                self.world.remove_actor(self.actor)
             return None
         target = self.world.actor_at(loc)
         if target is not None and target is not self.actor:

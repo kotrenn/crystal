@@ -8,9 +8,13 @@ class Actor(object):
         self.world = world
         self.speed = Energy.NORMAL_SPEED
         self.energy = Energy()
+        self.set_world(world)
+        self.die_at_wall = False
 
     def set_world(self, world):
         self.world = world
+        if world is None:
+            return
         if self not in self.world.actors:
             self.world.actors.append(self)
 

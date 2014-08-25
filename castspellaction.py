@@ -11,5 +11,7 @@ class CastSpellAction(Action):
         world = self.actor.world
         loc = self.actor.loc
         vel = world.grid.dir_vel(self.dir)
-        projectile = Projectile(world, loc + vel, self.dir)
-        projectile.set_world(world)
+        start = loc + vel
+        if world.is_blocked(start):
+            return
+        projectile = Projectile(world, start, self.dir)
