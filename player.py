@@ -1,5 +1,6 @@
 import pygame
 
+from action import *
 from actor import *
 from spell import *
 from vector import *
@@ -23,3 +24,6 @@ class Player(Actor):
         action = self.next_action
         self.next_action = None
         return action
+
+    def default_attack(self, target):
+        return AttackAction(self, target)

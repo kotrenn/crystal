@@ -11,24 +11,9 @@ class Monster(Actor):
             self.speed = Energy.MIN_SPEED
         else:
             self.speed = Energy.MAX_SPEED
-        self.dst = vector(0, 0)
-        self.random_dst()
-
-    def random_dst(self):
-        done = False
-        dst = vector(0, 0)
-        while not done:
-            dst = [random.randint(0, self.world.dims[0] - 1),
-                   random.randint(0, self.world.dims[1] - 1)]
-            if not self.world.is_blocked(vector(dst)):
-                done = True
-        self.dst = vector(dst)
 
     def get_action(self):
-        if self.loc == self.dst:
-            self.random_dst()
-        
-        dir = self.world.a_star(self.loc, self.dst)
+        dir = self.world.a_star(self.loc, self.world.player.loc)
         if dir == DIR_NONE:
             return WalkAction(self, dir)
 
@@ -38,6 +23,9 @@ class Monster(Actor):
             return WalkAction(self, DIR_NONE)
         
         return WalkAction(self, dir)
+
+    def default_attack(self, target):
+        return AttackAction(self, target)
         
     def get_color(self):
         return (255, 0, 0)

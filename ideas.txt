@@ -8,3 +8,6 @@ Crystals
       Include white crystal for basic attack
     Surround player with ice crystals
     Create a projectile to go after nearest enemy
+    Burst spell
+      Attacks in 3x3, 5x5, ... area around the player
+    Burst on hit?

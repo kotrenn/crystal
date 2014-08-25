@@ -29,7 +29,8 @@ class PlayerController(object):
 
         if key in mapping:
             dir = mapping[key]
-            self.player.next_action = WalkAction(self.player, dir)
+            action = WalkAction(self.player, dir)
+            self.player.next_action = action
         
     def key_released(self, key):
         return

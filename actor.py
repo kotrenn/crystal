@@ -20,6 +20,9 @@ class Actor(object):
     def get_action(self):
         return None
 
+    def default_attack(self, target):
+        return None
+
     def get_symbol(self):
         return '@'
 

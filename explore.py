@@ -11,6 +11,7 @@ class Explore(Window):
         self.player = player
         self.player.set_world(world)
         self.player_controller = PlayerController(self, player, world)
+        self.world.player = player
         self.current_actor = 0
 
     def advance_actor(self):

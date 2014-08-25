@@ -30,6 +30,7 @@ class World(object):
 
         self.actors = []
         self.actors = [Monster(self) for _ in range(5)]
+        self.player = None
 
     def is_blocked(self, loc):
         if self.grid.out_of_bounds(loc):
@@ -50,6 +51,17 @@ class World(object):
             if loc == actor.loc:
                 return actor
         return None
+
+    def random_open(self):
+        done = False
+        loc = vector(0, 0)
+        while not done:
+            loc = [random.randint(0, self.dims[0] - 1),
+                   random.randint(0, self.dims[1] - 1)]
+            loc = vector(loc)
+            if not self.is_blocked(loc):
+                done = True
+        return loc
 
     class Node(object):
         FLOOR_COST = 10
