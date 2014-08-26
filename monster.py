@@ -14,6 +14,7 @@ class Monster(Actor):
         else:
             self.speed = Energy.MAX_SPEED
         self.hp = GameStat(10)
+        self.loc = self.world.random_empty()
 
     def get_action(self):
         dir = self.world.a_star(self.loc, self.world.player.loc)

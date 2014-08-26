@@ -15,6 +15,8 @@ class Explore(Window):
         self.player_controller = PlayerController(self, player, world)
         self.world.player = player
         self.current_actor = 0
+        self.camera_pos = vector(0, 0)
+        self.camera_dims = vector(12, 17)
 
     def advance_actor(self):
         num_actors = len(self.world.actors)
@@ -37,22 +39,45 @@ class Explore(Window):
                 self.advance_actor()
         action.execute()
         actor.update()
+        self.update_camera()
         self.advance_actor()
+
+    def update_camera(self):
+        loc = self.player.loc - self.camera_dims / 2
+        dims = self.camera_dims
+        min_row = 0
+        min_col = 0
+        max_row = self.world.grid.num_rows() - dims[0]
+        max_col = self.world.grid.num_cols() - dims[1]
+        if loc[0] < min_row: loc[0] = min_row
+        if loc[1] < min_col: loc[1] = min_col
+        if loc[0] > max_row: loc[0] = max_row
+        if loc[1] > max_col: loc[1] = max_col
+        self.camera_pos = loc
+
+    def in_bounds(self, loc):
+        row0, col0 = self.camera_pos.tuple()
+        row1, col1 = (self.camera_pos + self.camera_dims).tuple()
+        return loc[0] >= row0 and loc[1] >= col0 and \
+            loc[0] < row1 and \
+            loc[1] < col1
         
     def display(self, dst):
-        self.world_viewer.display(dst)
+        self.world_viewer.display(dst, self.camera_pos, self.camera_dims)
 
         # compute offset for the actor list
         settings = Settings()
-        dims = vector(self.world.grid.num_cols(), 0)
+        dims = vector(self.camera_dims[1], 0)
         text_offset = dims % self.world_viewer.tile_size
         text_offset += vector(20, 0)
 
         # draw actors and their info
         for (i, actor) in enumerate(self.world.actors):
             # draw the actor
-            loc = actor.loc
+            loc = actor.loc - self.camera_pos
             pos = self.world_viewer.grid_viewer.get_center(loc)
+            if not self.in_bounds(actor.loc):
+                continue
             actor.display(dst, pos)
 
             # draw actor info
@@ -65,7 +90,7 @@ class Explore(Window):
         # draw the player info
         player = self.player
         player_controller = self.player_controller
-        dims = vector(0, self.world.grid.num_rows())
+        dims = vector(0, self.camera_dims[0])
         text_offset = dims % self.world_viewer.tile_size
         text_offset += vector(20, 20)
         white = (255, 255, 255)

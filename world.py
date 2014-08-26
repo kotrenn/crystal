@@ -9,6 +9,7 @@ from vector import *
 class World(object):
     def __init__(self):
         self.dims = vector(12, 17)
+        self.dims = vector(20, 20)
         self.tiles = {
             'blank': [0, 8],
             'tree': [0, 9]
@@ -23,10 +24,11 @@ class World(object):
                 else:
                     self.grid.cells[row][col] = self.tiles['blank']
 
-        for row in range(self.dims[0]):
-            self.grid.cells[row][0] = self.tiles['blank']
-            self.grid.cells[row][1] = self.tiles['tree']
-        self.grid.cells[self.dims[0] - 1][1] = self.tiles['blank']
+        # create a row of trees (for testing)
+#         for row in range(self.dims[0]):
+#             self.grid.cells[row][0] = self.tiles['blank']
+#             self.grid.cells[row][1] = self.tiles['tree']
+#         self.grid.cells[self.dims[0] - 1][1] = self.tiles['blank']
 
         self.actors = []
         self.actors = [Monster(self) for _ in range(5)]

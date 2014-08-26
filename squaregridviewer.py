@@ -32,4 +32,4 @@ class SquareGridViewer(object):
             pos = vector(p)
             point = center + pos % dims
             final.append(point.list())
-        pygame.draw.polygon(dst, color, final, 1)
+        #pygame.draw.polygon(dst, color, final, 1)
