@@ -1,4 +1,5 @@
 import bisect
+import heapq
 import pygame
 import random
 
@@ -10,6 +11,7 @@ class World(object):
     def __init__(self):
         self.dims = vector(12, 17)
         self.dims = vector(20, 20)
+        self.dims = vector(50, 50)
         self.tiles = {
             'blank': [0, 8],
             'tree': [0, 9]
@@ -105,16 +107,16 @@ class World(object):
         dirs = [DIR_NW, DIR_N, DIR_NE, DIR_E,
                 DIR_SE, DIR_S, DIR_SW, DIR_W]
         dist = self.heuristic(src, dst)
-        q = [World.Node(src, DIR_NONE, 0, dist)]
-        totals = [dist]
+        start_node = World.Node(src, DIR_NONE, 0, dist)
+        q = [(dist, 0, start_node)]
+        count = 1
         finished = set([])
         ret = DIR_NONE
 
         # main loop
         while len(q) > 0 and ret == DIR_NONE:
             # find the minimum cost node
-            cur = q.pop(0)
-            totals.pop(0)
+            (_, _, cur) = heapq.heappop(q)
 
             # check if we've reached the goal
             if cur.loc == dst:
@@ -139,6 +141,9 @@ class World(object):
                 
                 # compute the cost of moving to this node
                 move_cost = World.Node.FLOOR_COST
+                ortho = [DIR_N, DIR_E, DIR_S, DIR_W]
+                if dir in ortho:
+                    move_cost = World.Node.STRAIGHT_COST
                 if self.actor_at(new_loc):
                     move_cost = World.Node.OCCUPIED_COST
 
@@ -148,9 +153,8 @@ class World(object):
                 new_node = World.Node(new_loc, new_dir,
                                       new_cost, new_heur)
 
-                # find location of where to insert new_node
+                # insert new node into q
                 new_total = new_cost + new_heur
-                off = bisect.bisect_right(totals, new_total)
-                totals.insert(off, new_total)
-                q.insert(off, new_node)
+                heapq.heappush(q, (new_total, count, new_node))
+                count += 1
         return ret

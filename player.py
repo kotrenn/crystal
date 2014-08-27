@@ -45,6 +45,7 @@ class Player(Actor):
     def update(self):
         if self.heal_timer == 0:
             self.heal_timer = 3
+            self.heal_timer = 1
             self.hp.add(1)
             for mana in self.mana:
                 mana.add(1)
