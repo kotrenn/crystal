@@ -13,7 +13,8 @@ class WorldViewer(object):
                                             self.tile_size)
 
     def display(self, dst, corner, dims):
-        self.grid_viewer.display(dst)
+        grid_viewer = self.grid_viewer
+        grid_viewer.display(dst)
 
         row0, col0 = corner.tuple()
         offset = vector(0, 0)
@@ -25,3 +26,9 @@ class WorldViewer(object):
                 tile_bounds += self.tile_size.list()
                 pos = offset + self.tile_size % vector(col, row)
                 dst.blit(self.tile_sheet, pos.list(), tile_bounds)
+
+                for crystal in self.world.items.cells[row][col]:
+                    grid_viewer
+                    center = corner + grid_viewer.get_center((row, col))
+                    radius = 0.25 * grid_viewer.cell_w
+                    crystal.display(dst, center, radius)

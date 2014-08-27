@@ -22,6 +22,29 @@ class Crystal(object):
         if random.randint(1, 5) == 1:
             self.atts['Cast'] = ['Projectile']
 
+    def random_pipes(self, num_in, num_out):
+        # variance on num_in and num_out
+        while random.randint(1, 5) == 1:
+            num_in += random.choice([1] * 3 + [-1])
+        while random.randint(1, 5) == 1:
+            num_out += random.choice([1] * 3 + [-1])
+
+        # scale to total of 6 and ensure at least one input
+        if num_in < 1: num_in = 1
+        total = num_in + num_out
+        if total > 6:
+            num_in = 6 * num_in / total
+            if num_in < 1: num_in = 1
+            num_out = 6 - num_in
+            total = num_in + num_out
+
+        # build the actual list
+        ret = ['In'] * num_in
+        ret += ['Out'] * num_out
+        ret += [None] * (6 - total)
+        random.shuffle(ret)
+        return ret
+
     def display(self, dst, center, radius):
         # get rgb tuple for rendering
         color = self.color.tuple()

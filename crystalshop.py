@@ -10,7 +10,7 @@ class CrystalShop(Window):
     def __init__(self, parent, player):
         Window.__init__(self, parent)
         self.player = player
-        self.crystals = [self.make_crystal() for _ in range(5)]
+        self.crystals = [self.make_crystal() for _ in range(30)]
         self.selector = CrystalSelector(self, self.crystals)
         self.crystal_display = CrystalDisplay()
 
@@ -24,6 +24,7 @@ class CrystalShop(Window):
                 if mod == 0:
                     continue
                 crystal.atts[ele] = mod
+        crystal.pipes = crystal.random_pipes(1, 1)
         return crystal
 
     def key_pressed(self, key):

@@ -1,4 +1,5 @@
 from castspellaction import *
+from getaction import *
 from squaregrid import *
 from walkaction import *
 
@@ -15,6 +16,10 @@ class PlayerController(object):
         if key == pygame.K_s:
             self.spell_select = not self.spell_select
             return
+
+        if key == pygame.K_g:
+            action = GetAction(self.player, self.player.loc)
+            self.player.next_action = action
 
         mapping = {
             pygame.K_q: -1,

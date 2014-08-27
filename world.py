@@ -10,14 +10,14 @@ from vector import *
 class World(object):
     def __init__(self):
         self.dims = vector(12, 17)
-        self.dims = vector(20, 20)
-        self.dims = vector(50, 50)
+        #self.dims = vector(20, 20)
         self.tiles = {
             'blank': [0, 8],
             'tree': [0, 9]
         }
         self.tiles = {k: vector(v) for (k, v) in self.tiles.iteritems()}
         self.grid = SquareGrid(self.dims)
+        self.items = SquareGrid(self.dims)
 
         for row in range(self.dims[0]):
             for col in range(self.dims[1]):
@@ -25,6 +25,7 @@ class World(object):
                     self.grid.cells[row][col] = self.tiles['tree']
                 else:
                     self.grid.cells[row][col] = self.tiles['blank']
+                self.items.cells[row][col] = []
 
         # create a row of trees (for testing)
 #         for row in range(self.dims[0]):
