@@ -26,7 +26,7 @@ class Monster(Actor):
         
         return WalkAction(self, dir)
 
-    def default_attack(self, target):
+    def default_attack(self, target, dir):
         return AttackAction(self, target, None)
         
     def get_color(self):

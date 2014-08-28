@@ -45,7 +45,7 @@ class Actor(object):
     def get_action(self):
         return None
 
-    def default_attack(self, target):
+    def default_attack(self, target, dir):
         return None
 
     def get_symbol(self):

@@ -14,7 +14,7 @@ class WalkAction(Action):
             return None
         target = self.world.actor_at(loc)
         if target is not None and target is not self.actor:
-            action = self.actor.default_attack(target)
+            action = self.actor.default_attack(target, self.dir)
             ret = None
             if action is not None:
                 ret = action.execute()

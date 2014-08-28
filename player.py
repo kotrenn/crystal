@@ -1,7 +1,6 @@
 import pygame
 
-from attackaction import *
-from attackdata import *
+from castspellaction import *
 from color import *
 from gamestat import *
 from actor import *
@@ -59,7 +58,7 @@ class Player(Actor):
         for (mana, cost) in zip(self.mana, mana_cost):
             mana.sub(cost)
 
-    def default_attack(self, target):
-        data = AttackData()
-        data.atts['Neutral'] = 10
-        return AttackAction(self, target, data)
+    def default_attack(self, target, dir):
+        spell = self.spells[0]
+        action = CastSpellAction(self, spell, dir)
+        return action
