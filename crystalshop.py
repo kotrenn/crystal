@@ -4,6 +4,7 @@ import random
 from crystal import *
 from crystaldisplay import *
 from crystalselector import *
+from menu import *
 from window import *
 
 class CrystalShop(Window):
@@ -30,12 +31,13 @@ class CrystalShop(Window):
     def key_pressed(self, key):
         Window.key_pressed(self, key)
 
-        if key == pygame.K_x or key == pygame.K_SPACE or key == pygame.K_RETURN:
+        if key in Menu.select_keys:
             selector = self.selector
             crystal = selector.get_selection()
-            if crystal is not None:
-                selector.remove_selection()
-                self.player.crystals.append(crystal)
+            if crystal is None:
+                return
+            selector.remove_selection()
+            self.player.crystals.append(crystal)
 
     def display(self, dst):
         Window.display(self, dst)

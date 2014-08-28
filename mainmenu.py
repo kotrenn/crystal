@@ -4,6 +4,7 @@ from inventorymenu import *
 from menu import *
 from spell import *
 from spellmenu import *
+from upgrademenu import *
 
 class MainMenu(Menu):
     def __init__(self, player):
@@ -22,6 +23,8 @@ class MainMenu(Menu):
             self.child = InventoryMenu(self, self.player)
         elif msg == 'Explore':
             self.child = Explore(self, self.world, self.player)
+        elif msg == 'Upgrade':
+            self.child = UpgradeMenu(self, self.player)
         elif msg == 'Spells':
             self.child = SpellMenu(self, self.player)
 

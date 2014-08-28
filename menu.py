@@ -4,13 +4,17 @@ from window import *
 from render import *
 
 class Menu(Window):
+    select_keys = [pygame.K_SPACE,
+                   pygame.K_z,
+                   pygame.K_RETURN]
+    
     def __init__(self, parent, items):
         Window.__init__(self, parent)
         self.items = items
         self.selection = 0
 
-    def key_pressed(self, key):
-        Window.key_pressed(self, key)
+    def key_released(self, key):
+        Window.key_released(self, key)
 
         if key == pygame.K_UP:
             self.selection -= 1
@@ -21,7 +25,7 @@ class Menu(Window):
         if self.selection >= len(self.items):
             self.selection = 0
 
-        if key == pygame.K_SPACE or key == pygame.K_z or key == pygame.K_RETURN:
+        if key in Menu.select_keys:
             self.select(self.get_selection())
 
     def display(self, dst):

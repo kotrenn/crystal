@@ -7,6 +7,7 @@ class CrystalSelector(object):
         parent.add_key_listener(self)
         self.parent = parent
         self.crystals = crystals
+        self.selecting = True
         self.selection = vector(0, 0)
         self.num_cols = 10
 
@@ -14,6 +15,9 @@ class CrystalSelector(object):
         return
 
     def key_released(self, key):
+        if not self.selecting:
+            return
+        
         mapping = {
             pygame.K_UP: [0, -1],
             pygame.K_DOWN: [0, 1],
@@ -67,6 +71,8 @@ class CrystalSelector(object):
     def display(self, dst, corner, radius):
         if len(self.crystals) == 0:
             return
+
+        # draw the crystals
         crystal_skip = 3 * radius
         row = col = 0
         num_cols = self.num_cols
@@ -77,6 +83,10 @@ class CrystalSelector(object):
             if col >= num_cols:
                 col = 0
                 row += 1
+                
+        # draw a box around the currently selected crystal
+        if not self.selecting:
+            return
         loc = self.selection
         center = corner + crystal_skip * loc
         skip = crystal_skip * vector(1, 1)
