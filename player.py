@@ -12,6 +12,7 @@ class Player(Actor):
         Actor.__init__(self, world)
         self.hp = GameStat(20)
         self.mana = [GameStat(10) for _ in range(3)]
+        self.mana_gen = Color(1, 1, 1)
         self.crystals = []
         self.spells = []
         for size in [2, 3, 4]:
@@ -44,10 +45,10 @@ class Player(Actor):
     def update(self):
         if self.heal_timer == 0:
             self.heal_timer = 3
-            self.heal_timer = 1
+            self.heal_timer = 0
             self.hp.add(1)
-            for mana in self.mana:
-                mana.add(1)
+            for mana, delta in zip(self.mana, self.mana_gen):
+                mana.add(delta)
         else:
             self.heal_timer -= 1
 

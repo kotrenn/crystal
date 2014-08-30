@@ -34,7 +34,7 @@ class Projectile(Actor):
     def get_color(self):
         return (0, 0, 255)
 
-    def default_attack(self, target):
+    def default_attack(self, target, dir):
         self.world.remove_actor(self)
         return AttackAction(self, target, self.data)
     

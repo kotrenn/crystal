@@ -4,7 +4,7 @@ from menu import *
 
 class UpgradeMenu(Menu):
     def __init__(self, parent, player):
-        options = ['Manipulate', 'Red', 'Green', 'Blue', 'Back']
+        options = ['Manipulate', 'Mana', 'Mana Regen', 'Back']
         Menu.__init__(self, parent, options)
         self.player = player
         self.buffer = []
@@ -62,24 +62,26 @@ class UpgradeMenu(Menu):
             self.cur_selector.selecting = True
             return
 
-        mapping = {
-            'Red': 0,
-            'Green': 1,
-            'Blue': 2
-        }
-        if not msg in mapping:
-            return
-        index = mapping[msg]
-        color = Color(0, 0, 0)
-        color[index] = 1
-        mana = self.player.mana[index]
-        match = filter(lambda x: color <= x.color, self.buffer)
-        count = len(match)
-        print 'Adding ' + str(count) + ' mana to ' + msg
-        mana.max_val += count
-        mana.add(count)
-        for crystal in match:
-            self.buffer.remove(crystal)
+        
+
+        if msg == 'Mana':
+            delta = Color(0, 0, 0)
+            for crystal in self.buffer:
+                delta += crystal.color
+            for i in range(3):
+                mana = self.player.mana[i]
+                mana.max_val += delta[i]
+                mana.add(delta[i])
+            while len(self.buffer) > 0:
+                self.buffer.pop()
+
+        if msg == 'Mana Regen':
+            delta = Color(0, 0, 0)
+            for crystal in self.buffer:
+                delta += crystal.color
+            self.player.mana_gen += delta
+            while len(self.buffer) > 0:
+                self.buffer.pop()
         
     def display(self, dst):
         Menu.display(self, dst)
