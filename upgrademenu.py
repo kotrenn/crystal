@@ -4,7 +4,7 @@ from menu import *
 
 class UpgradeMenu(Menu):
     def __init__(self, parent, player):
-        options = ['Manipulate', 'Mana', 'Mana Regen', 'Back']
+        options = ['Manipulate', 'Health', 'Mana', 'Mana Regen', 'Back']
         Menu.__init__(self, parent, options)
         self.player = player
         self.buffer = []
@@ -64,6 +64,19 @@ class UpgradeMenu(Menu):
 
         
 
+        if msg == 'Health':
+            delta = Color(0, 0, 0)
+            for crystal in self.buffer:
+                delta += crystal.color
+            hp_gain = min(delta.tuple(1))
+            hp = self.player.hp
+            hp.max_val += hp_gain
+            hp.add(hp_gain)
+            #delta -= Color([hp_gain] * 3)
+            while len(self.buffer) > 0 and delta > Color():
+                crystal = self.buffer.pop()
+                delta -= crystal.color
+                
         if msg == 'Mana':
             delta = Color(0, 0, 0)
             for crystal in self.buffer:

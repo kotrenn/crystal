@@ -17,7 +17,7 @@ class Projectile(Actor):
         if target is not None:
             if not target.has_class('Monster'):
                 return
-            action = self.default_attack(target)
+            action = self.default_attack(target, self.dir)
             action.execute()
             if self.instant:
                 self.world.remove_actor(self)
