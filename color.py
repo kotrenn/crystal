@@ -11,7 +11,7 @@ class Color(object):
 
     # string output
     def __str__(self):
-        return str(self.tuple(1))
+        return str(self.tuple())
 
     # comparison operators
     def __eq__(self, c):
@@ -70,6 +70,6 @@ class Color(object):
         return self.v[i]
 
     # get rgb tuple for rendering
-    def tuple(self, val = 255):
+    def tuple(self, val = 1):
         return tuple([x * val for x in self.v])
 

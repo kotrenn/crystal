@@ -10,13 +10,13 @@ class InventoryMenu(Menu):
             else:
                 crystals[color] = 1
         title = {
-            (255, 0, 0): 'Red',
-            (0, 255, 0): 'Green',
-            (0, 0, 255): 'Blue',
-            (255, 255, 0): 'Yellow',
-            (255, 0, 255): 'Purple',
-            (0, 255, 255): 'Cyan',
-            (255, 255, 255): 'White'
+            (1, 0, 0): 'Red',
+            (0, 1, 0): 'Green',
+            (0, 0, 1): 'Blue',
+            (1, 1, 0): 'Yellow',
+            (1, 0, 1): 'Purple',
+            (0, 1, 1): 'Cyan',
+            (1, 1, 1): 'White'
         }
         options = [str(title[k]) + ' x' + str(v) for (k, v) in crystals.iteritems()]
         options += ['Back']
