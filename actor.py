@@ -48,6 +48,9 @@ class Actor(object):
     def default_attack(self, target, dir):
         return None
 
+    def talk_to(self, source):
+        return
+
     def get_symbol(self):
         return '@'
 

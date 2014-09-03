@@ -1,6 +1,7 @@
 from castspellaction import *
 from getaction import *
 from squaregrid import *
+from talkaction import *
 from walkaction import *
 
 class PlayerController(object):
@@ -11,10 +12,15 @@ class PlayerController(object):
         parent.add_key_listener(self)
         self.spell_select = False
         self.spell_selection = 0
+        self.talk_select = False
 
     def key_pressed(self, key):
         if key == pygame.K_s:
             self.spell_select = not self.spell_select
+            return
+
+        if key == pygame.K_t:
+            self.talk_select = not self.talk_select
             return
 
         if key == pygame.K_g:
@@ -59,6 +65,16 @@ class PlayerController(object):
                 spells = self.player.spells
                 spell = spells[self.spell_selection]
                 action = CastSpellAction(self.player, spell, dir)
+            elif self.talk_select:
+                # make this have the player talk to herself (humor)
+                if dir == DIR_NONE:
+                    return
+                self.talk_select = False    
+                loc = grid.move_loc(dir, self.player.loc)
+                target = self.world.actor_at(loc)
+                if target is None:
+                    return
+                action = TalkAction(self.player, target)
             else:
                 action = WalkAction(self.player, dir)
             self.player.next_action = action

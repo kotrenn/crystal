@@ -4,6 +4,7 @@ import pygame
 import random
 
 from monster import *
+from npc import *
 from squaregrid import *
 from vector import *
 
@@ -35,6 +36,7 @@ class World(object):
 
         self.actors = []
         self.actors = [Monster(self) for _ in range(5)]
+        self.actors.append(NPC())
         self.player = None
 
     def remove_actor(self, actor):
