@@ -14,3 +14,21 @@ Crystals
     Bounces off walls
       Rotate/flip direction on collision
     Projectile that allows player to control enemy when hit
+
+Crafting system
+  Cost
+    Generic cost to activate (e.g. 3 crystal to replace a color)
+  Input
+    :Crystal denotes type
+    x1 denotes a single amount
+    x3 denotes a fixed-length array
+    xN denote an array
+    If no x? denoted, assume x1
+  Output
+    Give name of input variable to modify
+    If none given, assume creating new things
+  Code stuff
+    src.color denotes grabbing single attribute of src
+    src$color denotes grabbing the array of this value
+      src$color ==> [x.color for x in src]
+    @foo denotes calling a function
