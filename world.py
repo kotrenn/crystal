@@ -36,7 +36,7 @@ class World(object):
 
         self.actors = []
         self.actors = [Monster(self) for _ in range(5)]
-        self.actors.append(NPC())
+        self.actors.append(NPC(self))
         self.player = None
 
     def remove_actor(self, actor):

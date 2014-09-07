@@ -1,4 +1,5 @@
 import copy
+import math
 import random
 
 from attackdata import *
@@ -118,3 +119,37 @@ class Spell(object):
         data = AttackData()
         data.atts = self.get_modifiers()
         return data
+
+    def display(self, dst, center, radius):
+        color = (255, 255, 255)
+
+        vels = {
+            'N': 90,
+            'NE': 30,
+            'SE': -30,
+            'S': -90,
+            'SW': -150,
+            'NW': 150
+            }
+        d2r = math.pi / 180
+        dir_vel = {k: vector(math.cos(t * d2r), math.sin(t * d2r))
+                   for (k, t) in vels.iteritems()}
+        dirs = ['N', 'NE', 'SE', 'S', 'SW', 'NW']
+        points = [[x] for x in range(6)]
+        for x in range(6):
+            points += [[x, x], [x, x, (x + 1) % 6], 
+                       [(x + 1) % 6, (x + 1) % 6, x]]
+        zero = vector(0, 0)
+        points = [sum([dir_vel[dirs[dir]] for dir in p], zero) for p in points]
+
+        segments = [[0, 1, 2, 3, 4, 5, 0]]
+        for x in range(6):
+            y = 3 * x
+            vals = [y, y + 1, y + 2, y + 3]
+            vals = [x] + [6 + v % 18 for v in vals]
+            segments += [vals]
+
+        for line in segments:
+            plist = [center + radius * points[p] for p in line]
+            plist = [p.list() for p in plist]
+            pygame.draw.lines(dst, color, False, plist)
