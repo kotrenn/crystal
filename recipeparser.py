@@ -16,7 +16,10 @@ class Recipe(object):
         ret += '  input = ' + str(map(str, self.input)) + '\n'
         ret += '  output = ' + str(map(str, self.output)) + '\n'
         ret += '  req = ' + str(self.req) + '\n'
-        ret += '  code = ' + str(self.code) + '\n'
+        ret += '  code = {\n'
+        for stat in self.code:
+            ret += '    ' + str(stat) + '\n'
+        ret += '  }'
         return ret
 
 class Variable(object):
@@ -27,6 +30,53 @@ class Variable(object):
         
     def __str__(self):
         ret = self.name + ':' + self.type + 'x' + str(self.count)
+        return ret
+
+class FunctionCall(object):
+    def __init__(self, code):
+        self.name = ''
+        self.args = []
+
+        self.parse_code(code)
+
+    def __str__(self):
+        ret = self.name + '('
+        ret += ', '.join([str(arg) for arg in self.args])
+        ret += ')'
+        return ret
+
+    def parse_code(self, code):
+        print 'parse_code = `' + code + '`'
+        pos = code.index('(')
+        name = code[:pos]
+        body = code[pos:]
+        self.name = name
+        if body[-1] != ')':
+            print 'Missing `)` at end of function call `' + code + '`'
+            return None
+        body = body[1:-1]
+        args = body.split(',')
+        print 'code_args = `' + str(args) + '`'
+        for arg in args:
+            if len(arg) == 0:
+                continue
+            val = None
+            if arg[0] == '@':
+                val = FunctionCall(arg)
+            else:
+                val = arg
+            self.args.append(val)
+
+class Statement(object):
+    def __init__(self):
+        self.var = None
+        self.func = None
+
+    def __str__(self):
+        ret = ''
+        if self.var:
+            ret += self.var + ' = '
+        ret += str(self.func)
         return ret
 
 class RecipeParser(object):
@@ -83,6 +133,8 @@ class RecipeParser(object):
             self.read_variables(cur_recipe.input)
         elif token == 'output':
             self.read_variables(cur_recipe.output)
+        elif token == 'code':
+            self.read_code(cur_recipe.code)
         else:
             print 'Unknown token: ' + token
 
@@ -133,3 +185,31 @@ class RecipeParser(object):
             else:
                 cur_variable.name = token
             token = self.next_token(True)
+
+    def read_code(self, dst):
+        token = self.next_token(True) # munch '{'
+        if token != '{':
+            print 'Error: missing {'
+        token = self.next_token()
+        print 'first code token = `' + token + '`'
+        cur_statement = None
+        while token:
+            print 'code token = ' + token
+            if token == '}':
+                break
+            cur_statement = Statement()
+            dst.append(cur_statement)
+            if token[0] != '@':
+                cur_statement.var = token
+                token = self.next_token() # munch '='
+                token = self.next_token() # get function name
+            if self.prev_x != '\n':
+                token += self.file.readline()
+            code_line = ''.join(token.split())
+            print 'code gives us `' + code_line + '`'
+            func = FunctionCall(code_line)
+            cur_statement.func = func
+            token = self.next_token()
+        #token = self.next_token(True) # munch '}'
+        #if token != '}':
+        #    print 'Error: missing }'

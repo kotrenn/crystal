@@ -1,8 +1,8 @@
-from craftparser import *
+from recipeparser import *
 
-parser = CraftParser()
+parser = RecipeParser()
 
-parser.open('craft.txt')
+parser.open('recipes.txt')
 recipes = parser.read()
 parser.close()
 
