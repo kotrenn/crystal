@@ -32,3 +32,21 @@ Crafting system
     src$color denotes grabbing the array of this value
       src$color ==> [x.color for x in src]
     @foo denotes calling a function
+
+  Function list:
+    @sum(list)
+    @min(list)
+    @add_hp(int)
+    @add_mana(color)
+    @random_pipes(list:pipe)
+    @random_color()
+    @add(int, int)
+    @randint(a, b)
+    @set_att(att_list, att)
+    @remove_corruption(spell)
+    @Spell(int)
+    @add_corruption(spell, int)
+    @spell_crystals(spell)
+    @geq(int, int)
+    @has_corruption(spell)
+    @eq(int, int)

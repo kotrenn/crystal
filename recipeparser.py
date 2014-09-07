@@ -15,7 +15,7 @@ class Recipe(object):
         ret += '  cost = ' + str(map(str, self.cost)) + '\n'
         ret += '  input = ' + str(map(str, self.input)) + '\n'
         ret += '  output = ' + str(map(str, self.output)) + '\n'
-        ret += '  req = ' + str(self.req) + '\n'
+        ret += '  req = ' + str(map(str, self.req)) + '\n'
         ret += '  code = {\n'
         for stat in self.code:
             ret += '    ' + str(stat) + '\n'
@@ -46,7 +46,6 @@ class FunctionCall(object):
         return ret
 
     def parse_code(self, code):
-        print 'parse_code = `' + code + '`'
         pos = code.index('(')
         name = code[:pos]
         body = code[pos:]
@@ -55,8 +54,7 @@ class FunctionCall(object):
             print 'Missing `)` at end of function call `' + code + '`'
             return None
         body = body[1:-1]
-        args = body.split(',')
-        print 'code_args = `' + str(args) + '`'
+        args = self.split_args(body)
         for arg in args:
             if len(arg) == 0:
                 continue
@@ -66,6 +64,29 @@ class FunctionCall(object):
             else:
                 val = arg
             self.args.append(val)
+
+    def split_args(self, args):
+        lhs = 0
+        rhs = 0
+        ret = []
+        depth = 0
+        while rhs < len(args):
+            x = args[rhs]
+            if x == '(':
+                depth += 1
+            elif x == ')':
+                depth -= 1
+                if depth < 0:
+                    print 'Error: too many `)` in argument list `' + args + '`'
+            elif x == ',' and depth == 0:
+                cur = args[lhs:rhs]
+                ret.append(cur)
+                lhs = rhs + 1
+                rhs += 1
+            rhs += 1
+        cur = args[lhs:]
+        ret.append(cur)
+        return ret
 
 class Statement(object):
     def __init__(self):
@@ -124,7 +145,6 @@ class RecipeParser(object):
         return ret
 
     def process_token(self, token, cur_recipe):
-        print 'token = ' + token
         if token == 'label':
             cur_recipe.label = self.read_label()
         elif token == 'cost':
@@ -133,6 +153,8 @@ class RecipeParser(object):
             self.read_variables(cur_recipe.input)
         elif token == 'output':
             self.read_variables(cur_recipe.output)
+        elif token == 'req':
+            self.read_code(cur_recipe.req)
         elif token == 'code':
             self.read_code(cur_recipe.code)
         else:
@@ -173,7 +195,6 @@ class RecipeParser(object):
         cur_variable = None
         token = self.next_token(True)
         while token:
-            print 'var token = ' + token
             if token[0] == ':':
                 type = token[1:]
                 cur_variable = Variable()
@@ -191,10 +212,8 @@ class RecipeParser(object):
         if token != '{':
             print 'Error: missing {'
         token = self.next_token()
-        print 'first code token = `' + token + '`'
         cur_statement = None
         while token:
-            print 'code token = ' + token
             if token == '}':
                 break
             cur_statement = Statement()
@@ -206,10 +225,6 @@ class RecipeParser(object):
             if self.prev_x != '\n':
                 token += self.file.readline()
             code_line = ''.join(token.split())
-            print 'code gives us `' + code_line + '`'
             func = FunctionCall(code_line)
             cur_statement.func = func
             token = self.next_token()
-        #token = self.next_token(True) # munch '}'
-        #if token != '}':
-        #    print 'Error: missing }'

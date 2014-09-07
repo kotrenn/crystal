@@ -18,7 +18,9 @@ mp_upgrade:
 mp_gen_upgrade:
   label "Mana Generation Upgrade"
   input :Crystal src xN
-  req @geq(N, 10)
+  req {
+    @geq(N, 10)
+  }
   code {
     total = @sum(src$color)
     total = @divide(total, 10)
@@ -67,7 +69,9 @@ decorrupt:
   cost :Crystal x20
   input :Spell src
   output :Spell src
-  req @has_corruption(src)
+  req {
+    @has_corruption(src)
+  }
   code {
     @remove_corruption(src)
   }
@@ -86,7 +90,9 @@ medium_spell:
   cost :Crystal x20
   input :Spell src
   output :Spell dst :Crystal crystals xN
-  req @eq(src.size, 2)
+  req {
+    @eq(src.size, 2)
+  }
   code {
     crystals = @spell_crystals(src)
     dst = @Spell(3)
@@ -98,9 +104,11 @@ large_spell:
   cost :Crystal x20
   input :Spell src
   output :Spell dst :Crystal crystals xN
-  req @eq(src.size, 3)
+  req {
+    @eq(src.size, 3)
+  }
   code {
     crystals = @spell_crystals(src)
     dst = @Spell(4)
-    @add_corruption(dst, 6)
+    @add_corruption(dst, 7)
   }
