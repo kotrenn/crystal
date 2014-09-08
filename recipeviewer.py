@@ -13,14 +13,18 @@ class RecipeViewer(Window):
         self.input_selectors = []
         self.crystal_selector = ItemSelector(self, self.player.crystals)
         self.spell_selector = ItemSelector(self, self.player.spells)
+        self.crystal_selector.selecting = False
+        self.spell_selector.selecting = False
 
         self.build_selectors(self.cost_selectors,
                              self.recipe.cost)
         self.build_selectors(self.input_selectors,
                              self.recipe.input)
 
-        self.cur_selector = self.crystal_selector
-        self.cur_dst = self.first_selector()
+        self.cur_selector = None
+        self.cur_dst = None
+        self.switch_selector(self.crystal_selector)
+        self.switch_dst(self.first_selector())
 
     def build_selectors(self, selector_list, vars):
         for var in vars:
@@ -30,7 +34,17 @@ class RecipeViewer(Window):
                 count = int(var.count)
                 selector.max_size = count
                 selector.num_cols = min(10, count)
+            selector.selecting = False
             selector_list.append(selector)
+
+    def switch_selector(self, selector):
+        if self.cur_selector is not None:
+            self.cur_selector.selecting = False
+        self.cur_selector = selector
+        self.cur_selector.selecting = True
+
+    def switch_dst(self, selector):
+        self.cur_dst = selector
 
     def first_selector(self):
         if len(self.input_selectors) > 0:
@@ -73,12 +87,14 @@ class RecipeViewer(Window):
     def key_released(self, key):
         Window.key_released(self, key)
 
-        self.cur_selector.key_released(key)
+        #self.cur_selector.key_released(key)
 
         if key == pygame.K_s:
-            self.cur_selector = self.next_selector(self.cur_selector)
+            #self.cur_selector = self.next_selector(self.cur_selector)
+            self.switch_selector(self.next_selector(self.cur_selector))
         if key == pygame.K_d:
-            self.cur_dst = self.next_dst(self.cur_dst)
+            #self.cur_dst = self.next_dst(self.cur_dst)
+            self.switch_dst(self.next_dst(self.cur_dst))
 
     def display(self, dst):
         # draw the title
