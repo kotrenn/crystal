@@ -149,6 +149,6 @@ class Spell(object):
             segments += [vals]
 
         for line in segments:
-            plist = [center + radius * points[p] for p in line]
+            plist = [center + 0.5 * radius * points[p] for p in line]
             plist = [p.list() for p in plist]
             pygame.draw.lines(dst, color, False, plist)

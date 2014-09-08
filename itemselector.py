@@ -10,9 +10,16 @@ class ItemSelector(object):
         self.selecting = True
         self.selection = vector(0, 0)
         self.num_cols = 10
+        self.max_size = None
+
+    def has_space(self):
+        return len(self.items) < self.max_size
 
     def key_pressed(self, key):
         return
+
+    def num_rows(self):
+        return 1 + len(self.items) / self.num_cols
 
     def key_released(self, key):
         if not self.selecting:
@@ -29,14 +36,14 @@ class ItemSelector(object):
             loc = self.selection + vel
             num_items = len(self.items)
             num_cols = self.num_cols
-            num_rows = num_items / num_cols
-            loc += vector(num_cols, num_rows + 1)
+            num_rows = self.num_rows()
+            loc += vector(num_cols, num_rows)
             loc[0] %= num_cols
-            loc[1] %= num_rows + 1
+            loc[1] %= num_rows
             if loc[0] >= num_items % num_cols and \
-               loc[1] == num_rows:
+               loc[1] == num_rows - 1:
                 if vel[1] < 0:
-                    loc[1] = num_rows - 1
+                    loc[1] = num_rows - 2
                 elif vel[0] != 0:
                     if vel[0] < 0 and self.selection[0] == 0:
                         loc[0] = num_items % num_cols - 1
@@ -69,11 +76,14 @@ class ItemSelector(object):
         return sel
 
     def display(self, dst, corner, radius):
+        item_skip = 3 * radius
+        offset = corner - 0.5 * item_skip * vector(1, 1)
+        self.draw_bounds(dst, offset, radius)
+        
         if len(self.items) == 0:
             return
 
         # draw the items
-        item_skip = 3 * radius
         row = col = 0
         num_cols = self.num_cols
         for (i, item) in enumerate(self.items):
@@ -83,7 +93,7 @@ class ItemSelector(object):
             if col >= num_cols:
                 col = 0
                 row += 1
-                
+
         # draw a box around the currently selected item
         if not self.selecting:
             return
@@ -94,3 +104,10 @@ class ItemSelector(object):
         dims = corner.list() + skip.list()
         white = (255, 255, 255)
         pygame.draw.rect(dst, white, dims, 1)
+
+    def draw_bounds(self, dst, corner, radius):
+        white = (255, 255, 255)
+        item_skip = 3 * radius
+        dims = item_skip * vector(self.num_cols, self.num_rows())
+        rect = corner.list() + dims.list()
+        pygame.draw.rect(dst, white, rect, 1)
