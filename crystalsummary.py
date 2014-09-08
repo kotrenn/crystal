@@ -1,7 +1,7 @@
 from crystal import *
 from render import *
 
-class CrystalDisplay(object):
+class CrystalSummary(object):
     def __init__(self):
         return
 

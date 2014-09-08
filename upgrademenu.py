@@ -1,4 +1,4 @@
-from crystaldisplay import *
+from crystalsummary import *
 from itemselector import *
 from menu import *
 
@@ -16,7 +16,7 @@ class UpgradeMenu(Menu):
         self.other_selector.selecting = False
         self.buffer_selector.num_cols = 5
         self.player_selector.num_cols = 5
-        self.crystal_display = CrystalDisplay()
+        self.crystal_summary = CrystalSummary()
         self.selecting = False
 
     def key_released(self, key):
@@ -110,4 +110,4 @@ class UpgradeMenu(Menu):
         crystal = self.cur_selector.get_selection()
         if crystal is not None:
             corner = vector(20, 300)
-            self.crystal_display.display(dst, crystal, corner)
+            self.crystal_summary.display(dst, crystal, corner)

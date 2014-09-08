@@ -1,4 +1,3 @@
-from crystaldisplay import *
 from hexgridviewer import *
 from spell import *
 
@@ -7,7 +6,6 @@ class SpellViewer(Window):
         Window.__init__(self, parent)
         self.spell = spell
         self.grid_viewer = HexGridViewer(self.spell.grid)
-        self.crystal_display = CrystalDisplay()
 
     def display(self, dst):
         # draw the grid

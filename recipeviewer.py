@@ -26,7 +26,7 @@ class RecipeViewer(Window):
             if var.count.isdigit():
                 count = int(var.count)
                 selector.max_size = count
-                selector.num_cols = count
+                selector.num_cols = min(10, count)
             selector_list.append(selector)
 
     def display(self, dst):
@@ -45,7 +45,8 @@ class RecipeViewer(Window):
         selectors = []
         selectors += zip(self.input_selectors, self.recipe.input)
         selectors += zip(self.cost_selectors, self.recipe.cost)
-        selectors += zip([self.crystal_selector, self.spell_selector], [None, None])
+        selectors += [(self.crystal_selector, 'crystals')]
+        selectors += [(self.spell_selector, 'spells')]
         for (selector, var) in selectors:
             cur_radius = radius
             selector.display(dst, corner, radius)

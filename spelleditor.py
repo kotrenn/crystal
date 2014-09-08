@@ -1,3 +1,4 @@
+from crystalsummary import *
 from itemselector import *
 from spellviewer import *
 
@@ -10,6 +11,7 @@ class SpellEditor(SpellViewer):
         self.prev_select = vector(0, 0)
         self.moving = False
         self.crystal_selector = ItemSelector(self, spell.player.crystals)
+        self.crystal_summary = CrystalSummary()
 
     def key_released(self, key):
         SpellViewer.key_released(self, key)
@@ -116,7 +118,7 @@ class SpellEditor(SpellViewer):
         crystal = self.crystal_selector.get_selection()
         if crystal is not None:
             corner = vector(400, 400)
-            self.crystal_display.display(dst, crystal, corner)
+            self.crystal_summary.display(dst, crystal, corner)
 
         atts = self.spell.get_atts()
         corner = vector(600, 400)

@@ -2,8 +2,8 @@ import pygame
 import random
 
 from crystal import *
-from crystaldisplay import *
 from crystalfactory import *
+from crystalsummary import *
 from itemselector import *
 from menu import *
 from window import *
@@ -15,7 +15,7 @@ class CrystalShop(Window):
         self.crystal_factory = BasicCrystalFactory()
         self.crystals = [self.make_crystal() for _ in range(30)]
         self.selector = ItemSelector(self, self.crystals)
-        self.crystal_display = CrystalDisplay()
+        self.crystal_summary = CrystalSummary()
 
     def make_crystal(self):
         crystal = self.crystal_factory.make_crystal()
@@ -42,4 +42,4 @@ class CrystalShop(Window):
         crystal = self.selector.get_selection()
         if crystal is not None:
             corner = vector(80, 300)
-            self.crystal_display.display(dst, crystal, corner)
+            self.crystal_summary.display(dst, crystal, corner)
