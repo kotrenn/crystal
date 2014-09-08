@@ -1,3 +1,4 @@
+from itemselector import *
 from spellviewer import *
 
 class SpellEditor(SpellViewer):
@@ -8,7 +9,7 @@ class SpellEditor(SpellViewer):
         self.select = vector(size - 1, size - 1)
         self.prev_select = vector(0, 0)
         self.moving = False
-        self.crystal_selector = CrystalSelector(self, spell.player.crystals)
+        self.crystal_selector = ItemSelector(self, spell.player.crystals)
 
     def key_released(self, key):
         SpellViewer.key_released(self, key)
@@ -87,7 +88,7 @@ class SpellEditor(SpellViewer):
                 crystal = grid.cells[row][col]
                 if crystal.atts['Movable']:
                     grid.cells[row][col] = None
-                    self.crystal_selector.add_crystal(crystal)
+                    self.crystal_selector.add_item(crystal)
 
     def display(self, dst):
         SpellViewer.display(self, dst)

@@ -4,7 +4,7 @@ import random
 from crystal import *
 from crystaldisplay import *
 from crystalfactory import *
-from crystalselector import *
+from itemselector import *
 from menu import *
 from window import *
 
@@ -14,7 +14,7 @@ class CrystalShop(Window):
         self.player = player
         self.crystal_factory = BasicCrystalFactory()
         self.crystals = [self.make_crystal() for _ in range(30)]
-        self.selector = CrystalSelector(self, self.crystals)
+        self.selector = ItemSelector(self, self.crystals)
         self.crystal_display = CrystalDisplay()
 
     def make_crystal(self):

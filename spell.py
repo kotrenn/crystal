@@ -4,7 +4,6 @@ import random
 
 from attackdata import *
 from crystal import *
-from crystalselector import *
 from hexgrid import *
 from window import *
 from vector import *

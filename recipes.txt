@@ -64,6 +64,39 @@ att_upgrade:
     @set_att(src.atts, att)
   }
 
+mana_cost:
+  label "Reduce Mana Cost"
+  cost :Crystal cost x20
+  input :Crystal src
+  output :Crystal src
+  req {
+    @lt(@Color(0, 0, 0), src.color)
+    @leq(src.color, cost$color)
+  }
+  code {
+    r = @randint(0, 1)
+    g = @randint(0, 1)
+    b = @randint(0, 1)
+    diff = @color(r, g, b)
+    src.color = @sub(src.color, diff)
+  }
+
+mana_cost_any:
+  label "Reduce Mana Cost (Any)"
+  cost :Crystal cost x5
+  input :Crystal src
+  output :Crystal src
+  req {
+    @lt(@Color(0, 0, 0), src.color)
+  }
+  code {
+    r = @randint(0, 1)
+    g = @randint(0, 1)
+    b = @randint(0, 1)
+    diff = @color(r, g, b)
+    src.color = @sub(src.color, diff)
+  }
+
 decorrupt:
   label "Remove Corruption"
   cost :Crystal x20

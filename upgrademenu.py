@@ -1,5 +1,5 @@
 from crystaldisplay import *
-from crystalselector import *
+from itemselector import *
 from menu import *
 
 class UpgradeMenu(Menu):
@@ -8,8 +8,8 @@ class UpgradeMenu(Menu):
         Menu.__init__(self, parent, options)
         self.player = player
         self.buffer = []
-        self.buffer_selector = CrystalSelector(self, self.buffer)
-        self.player_selector = CrystalSelector(self, self.player.crystals)
+        self.buffer_selector = ItemSelector(self, self.buffer)
+        self.player_selector = ItemSelector(self, self.player.crystals)
         self.cur_selector = self.player_selector
         self.other_selector = self.buffer_selector
         self.cur_selector.selecting = False
@@ -39,7 +39,7 @@ class UpgradeMenu(Menu):
                 return
             selector.remove_selection()
             selector = self.other_selector
-            selector.crystals.append(crystal)
+            selector.add_item(crystal)
             return
 
         if key == pygame.K_s:

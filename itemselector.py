@@ -2,11 +2,11 @@ import pygame
 
 from vector import *
 
-class CrystalSelector(object):
-    def __init__(self, parent, crystals):
+class ItemSelector(object):
+    def __init__(self, parent, items):
         parent.add_key_listener(self)
         self.parent = parent
-        self.crystals = crystals
+        self.items = items
         self.selecting = True
         self.selection = vector(0, 0)
         self.num_cols = 10
@@ -24,24 +24,24 @@ class CrystalSelector(object):
             pygame.K_LEFT: [-1, 0],
             pygame.K_RIGHT: [1, 0]
         }
-        if key in mapping and len(self.crystals) > 0:
+        if key in mapping and len(self.items) > 0:
             vel = vector(mapping[key])
             loc = self.selection + vel
-            num_crystals = len(self.crystals)
+            num_items = len(self.items)
             num_cols = self.num_cols
-            num_rows = num_crystals / num_cols
+            num_rows = num_items / num_cols
             loc += vector(num_cols, num_rows + 1)
             loc[0] %= num_cols
             loc[1] %= num_rows + 1
-            if loc[0] >= num_crystals % num_cols and \
+            if loc[0] >= num_items % num_cols and \
                loc[1] == num_rows:
                 if vel[1] < 0:
                     loc[1] = num_rows - 1
                 elif vel[0] != 0:
                     if vel[0] < 0 and self.selection[0] == 0:
-                        loc[0] = num_crystals % num_cols - 1
+                        loc[0] = num_items % num_cols - 1
                     else:
-                        loc[0] %= num_crystals % num_cols
+                        loc[0] %= num_items % num_cols
                 else:
                     loc[1] = 0
             self.selection = loc
@@ -51,46 +51,46 @@ class CrystalSelector(object):
         sel = c_row * self.num_cols + c_col
         return sel
 
-    def add_crystal(self, crystal):
-        self.crystals.append(crystal)
+    def add_item(self, item):
+        self.items.append(item)
 
     def get_selection(self):
         sel = self.get_offset()
-        if sel < 0 or sel >= len(self.crystals):
+        if sel < 0 or sel >= len(self.items):
             return None
-        crystal = self.crystals[sel]
-        return crystal
+        item = self.items[sel]
+        return item
 
     def remove_selection(self):
         sel = self.get_offset()
-        if sel < 0 or sel >= len(self.crystals):
+        if sel < 0 or sel >= len(self.items):
             return None
-        self.crystals.pop(sel)
+        self.items.pop(sel)
         return sel
 
     def display(self, dst, corner, radius):
-        if len(self.crystals) == 0:
+        if len(self.items) == 0:
             return
 
-        # draw the crystals
-        crystal_skip = 3 * radius
+        # draw the items
+        item_skip = 3 * radius
         row = col = 0
         num_cols = self.num_cols
-        for (i, crystal) in enumerate(self.crystals):
-            center = corner + crystal_skip * vector(col, row)
-            crystal.display(dst, center, radius)
+        for (i, item) in enumerate(self.items):
+            center = corner + item_skip * vector(col, row)
+            item.display(dst, center, radius)
             col += 1
             if col >= num_cols:
                 col = 0
                 row += 1
                 
-        # draw a box around the currently selected crystal
+        # draw a box around the currently selected item
         if not self.selecting:
             return
         loc = self.selection
-        center = corner + crystal_skip * loc
-        skip = crystal_skip * vector(1, 1)
-        corner = center - 0.5 * crystal_skip * vector(1, 1)
+        center = corner + item_skip * loc
+        skip = item_skip * vector(1, 1)
+        corner = center - 0.5 * item_skip * vector(1, 1)
         dims = corner.list() + skip.list()
         white = (255, 255, 255)
         pygame.draw.rect(dst, white, dims, 1)
