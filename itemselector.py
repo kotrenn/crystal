@@ -76,7 +76,8 @@ class ItemSelector(object):
         return sel
 
     def display(self, dst, corner, radius):
-        self.draw_bounds(dst, corner, radius)
+        white = (255, 255, 255)
+        self.draw_bounds(dst, white, corner, radius)
         
         if len(self.items) == 0:
             return
@@ -101,13 +102,13 @@ class ItemSelector(object):
         skip = item_skip * vector(1, 1)
         corner = center - 0.5 * item_skip * vector(1, 1)
         dims = corner.list() + skip.list()
-        white = (255, 255, 255)
         pygame.draw.rect(dst, white, dims, 1)
 
-    def draw_bounds(self, dst, corner, radius):
+    def draw_bounds(self, dst, color, corner, radius, shrink=0):
         item_skip = 3 * radius
         corner = corner - 0.5 * item_skip * vector(1, 1)
-        white = (255, 255, 255)
+        corner += shrink * vector(1, 1)
         dims = item_skip * vector(self.num_cols, self.num_rows())
+        dims -= 2 * shrink * vector(1, 1)
         rect = corner.list() + dims.list()
-        pygame.draw.rect(dst, white, rect, 1)
+        pygame.draw.rect(dst, color, rect, 1)
