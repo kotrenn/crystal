@@ -7,6 +7,7 @@ from vector import *
 
 class Crystal(object):
     def __init__(self):
+        self.type = 'Crystal'
         self.color = Color(False, False, False)
         self.color[random.randint(0, 2)] = True
         if random.randint(1, 5) == 1:

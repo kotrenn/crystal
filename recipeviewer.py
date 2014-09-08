@@ -1,4 +1,5 @@
 from itemselector import *
+from menu import *
 from recipeparser import *
 from render import *
 from settings import *
@@ -12,8 +13,8 @@ class RecipeViewer(Window):
         self.cost_selectors = []
         self.input_selectors = []
         self.crystal_selector = ItemSelector(self, self.player.crystals)
-        self.spell_selector = ItemSelector(self, self.player.spells)
         self.crystal_selector.selecting = False
+        self.spell_selector = ItemSelector(self, self.player.spells)
         self.spell_selector.selecting = False
 
         self.build_selectors(self.cost_selectors,
@@ -35,6 +36,7 @@ class RecipeViewer(Window):
                 selector.max_size = count
                 selector.num_cols = min(10, count)
             selector.selecting = False
+            selector.add_type(var.type)
             selector_list.append(selector)
 
     def switch_selector(self, selector):
@@ -84,6 +86,26 @@ class RecipeViewer(Window):
                     return self.cost_selectors[0]
             return self.cost_selectors[index + 1]
 
+    def exit(self):
+        selectors = self.input_selectors + self.cost_selectors
+        for selector in selectors:
+            items = list(selector.items)
+            for item in items:
+                selector.remove_item(item)
+                self.add_inventory(item)
+        Window.exit(self)
+
+    def add_inventory(self, item):
+        dst = None
+        if item.type == 'Crystal':
+            dst = self.crystal_selector
+        elif item.type == 'Spell':
+            dst = self.spell_selector
+        else:
+            print 'Unknown item type: `' + item.type + '`'
+            return
+        dst.add_item(item)
+
     def key_released(self, key):
         Window.key_released(self, key)
 
@@ -91,6 +113,19 @@ class RecipeViewer(Window):
             self.switch_selector(self.next_selector(self.cur_selector))
         if key == pygame.K_d:
             self.switch_dst(self.next_dst(self.cur_dst))
+
+        if key in Menu.select_keys:
+            item = self.cur_selector.get_selection()
+            if item is None:
+                return
+            if self.cur_selector in self.input_selectors or \
+               self.cur_selector in self.cost_selectors:
+                self.add_inventory(item)
+            elif self.cur_dst.is_allowed(item):
+                self.cur_dst.add_item(item)
+            else:
+                return
+            self.cur_selector.remove_selection()
 
     def display(self, dst):
         # draw the title

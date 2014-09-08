@@ -11,6 +11,13 @@ class ItemSelector(object):
         self.selection = vector(0, 0)
         self.num_cols = 10
         self.max_size = None
+        self.allowed_types = []
+
+    def add_type(self, typename):
+        self.allowed_types.append(typename)
+
+    def is_allowed(self, item):
+        return item.type in self.allowed_types
 
     def has_space(self):
         return len(self.items) < self.max_size
@@ -74,6 +81,9 @@ class ItemSelector(object):
             return None
         self.items.pop(sel)
         return sel
+
+    def remove_item(self, item):
+        self.items.remove(item)
 
     def display(self, dst, corner, radius):
         white = (255, 255, 255)

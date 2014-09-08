@@ -10,6 +10,7 @@ from vector import *
 
 class Spell(object):
     def __init__(self, player, size):
+        self.type = 'Spell'
         self.player = player
         self.size = size
         self.grid = HexGrid(size)
