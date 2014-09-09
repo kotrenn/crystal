@@ -1,2 +1,0 @@
-label "Hello,\nWorld!  My \"name\" is Ramona"
-

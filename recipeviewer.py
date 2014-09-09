@@ -1,6 +1,7 @@
 from itemselector import *
 from menu import *
 from recipeparser import *
+from recipewalker import *
 from render import *
 from settings import *
 from window import *
@@ -26,6 +27,7 @@ class RecipeViewer(Window):
         self.cur_dst = None
         self.switch_selector(self.crystal_selector)
         self.switch_dst(self.first_selector())
+        self.walker = RecipeWalker(self.recipe)
 
     def build_selectors(self, selector_list, vars):
         for var in vars:
@@ -103,8 +105,8 @@ class RecipeViewer(Window):
             dst = self.spell_selector
         else:
             print 'Unknown item type: `' + item.type + '`'
-            return
-        dst.add_item(item)
+            return False
+        return dst.add_item(item, True)
 
     def key_released(self, key):
         Window.key_released(self, key)
@@ -118,14 +120,48 @@ class RecipeViewer(Window):
             item = self.cur_selector.get_selection()
             if item is None:
                 return
+            success = False
             if self.cur_selector in self.input_selectors or \
                self.cur_selector in self.cost_selectors:
-                self.add_inventory(item)
+                success = self.add_inventory(item)
             elif self.cur_dst.is_allowed(item):
-                self.cur_dst.add_item(item)
+                success = self.cur_dst.add_item(item, True)
             else:
                 return
+            if not success:
+                return
             self.cur_selector.remove_selection()
+
+        if key == pygame.K_e:
+            self.execute()
+
+    def execute(self):
+        variables = {}
+        bindings = []
+        bindings += zip(self.recipe.input, self.input_selectors)
+        bindings += zip(self.recipe.cost, self.cost_selectors)
+        for (var, selector) in bindings:
+            if var.count.isdigit() and int(var.count) == 1:
+                variables[var.name] = selector.items[0]
+            else:
+                variables[var.name] = selector.items
+            if not var.count.isdigit():
+                variables[var.count] = selector.num_items()
+        
+        if not self.walker.valid(variables, self.player):
+            return
+        self.walker.execute(variables, self.player)
+        for var in self.recipe.output:
+            print 'Looking up output variable ' + var.name
+            item = variables[var.name]
+            if var.type == 'Crystal':
+                self.crystal_selector.add_item(item)
+            else:
+                self.spell_selector.add_item(item)
+
+        selectors = self.input_selectors + self.cost_selectors
+        for selector in selectors:
+            selector.clear()
 
     def display(self, dst):
         # draw the title
@@ -158,4 +194,4 @@ class RecipeViewer(Window):
                 selector.draw_bounds(dst, white, corner, radius, 2)
             if selector == self.cur_dst:
                 selector.draw_bounds(dst, red, corner, radius, 4)
-            corner += selector_skip * selector.num_rows()
+            corner += selector_skip * selector.visible_rows()
