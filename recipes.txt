@@ -2,7 +2,7 @@ hp_upgrade:
   label "HP Upgrade"
   input :Crystal src xN
   code {
-    total = @sum(src$color)
+    total = @sum(src$color, @Color(0, 0, 0))
     result = @min(total)
     @add_hp(result)
   }
@@ -11,7 +11,7 @@ mp_upgrade:
   label "Mana Upgrade"
   input :Crystal src xN
   code {
-    total = @sum(src$color)
+    total = @sum(src$color, @Color(0, 0, 0))
     @add_mana(total)
   }
 
@@ -22,7 +22,7 @@ mp_gen_upgrade:
     @geq(N, 10)
   }
   code {
-    total = @sum(src$color)
+    total = @sum(src$color, @Color(0, 0, 0))
     total = @divide(total, 10)
     @add_mana_gen(total)
   }
@@ -48,21 +48,22 @@ color_randomize:
 add_color:
   label "Color Addition"
   cost :Crystal x5
-  input :Crystal lhs :crystal rhs 
+  input :Crystal lhs :Crystal rhs 
   output :Crystal lhs
   code {
-    dst.color = @add(lhs.color, rhs.color)
+    lhs.color = @add(lhs.color, rhs.color)
   }
 
 att_upgrade:
   label "Attribute Upgrade"
-  cost :Crystal x8
+  cost :Crystal x12
   input :Crystal src
   output :Crystal src
   code {
     att = @random_attribute(src.atts)
-    att.val = @add(att.val, @randint(1, 3))
-    @set_att(src.atts, att)
+    val = @get_att(src.atts, att)
+    new_val = @add(val, @randint(1, 3))
+    @set_att(src.atts, att, new_val)
   }
 
 mana_cost:
@@ -71,8 +72,8 @@ mana_cost:
   input :Crystal src
   output :Crystal src
   req {
-    @lt(@Color(0, 0, 0), src.color)
-    @leq(src.color, cost$color)
+    @lt(@Color(0, 0, 0), src.atts['mana'])
+    @leq(src.color, cost$atts['mana'])
   }
   code {
     r = @randint(0, 1)

@@ -154,10 +154,17 @@ class RecipeViewer(Window):
         for var in self.recipe.output:
             print 'Looking up output variable ' + var.name
             item = variables[var.name]
+            selector = None
             if var.type == 'Crystal':
-                self.crystal_selector.add_item(item)
+                selector = self.crystal_selector
             else:
-                self.spell_selector.add_item(item)
+                selector = self.spell_selector
+            if var.count.isdigit():
+                selector.add_item(item)
+            else:
+                items = item
+                for item in items:
+                    selector.add_item(item)
 
         selectors = self.input_selectors + self.cost_selectors
         for selector in selectors:

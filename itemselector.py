@@ -21,6 +21,8 @@ class ItemSelector(object):
         return item.type in self.allowed_types
 
     def has_space(self):
+        if self.max_size is None:
+            return True
         return self.num_items() < self.max_size
 
     def key_pressed(self, key):
@@ -77,7 +79,7 @@ class ItemSelector(object):
 
     def add_item(self, item, check_limit=False):
         if check_limit:
-            if self.num_items() >= self.max_size:
+            if not self.has_space():
                 return False
         self.items.append(item)
         return True

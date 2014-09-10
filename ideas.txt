@@ -57,3 +57,12 @@ Crafting system
     @leq(int, int)
     @geq(int, int)
     @has_corruption(spell)
+
+Bonus rooms
+
+Malificent benefactor
+  Offers list of bonuses/minuses:
+    Tree (DAG) of them depending on choices
+      First visit determines what choices are available
+      on the second visit
+
