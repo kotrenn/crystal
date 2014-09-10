@@ -37,6 +37,12 @@ class Crystal(object):
             points.append(p.list())
         pygame.draw.polygon(dst, color, points, 1)
 
+        # draw corruption
+        if 'Corruption' in self.atts and self.atts['Corruption']:
+            n2 = num_sides / 2
+            for i in range(num_sides / 2):
+                pygame.draw.line(dst, color, points[i], points[i + n2])
+
         # draw the pipes
         for (i, pipe) in enumerate(self.pipes):
             if pipe is None:
