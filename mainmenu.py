@@ -5,12 +5,11 @@ from inventorymenu import *
 from menu import *
 from spell import *
 from spellmenu import *
-from upgrademenu import *
 
 class MainMenu(Menu):
     def __init__(self, player):
         Menu.__init__(self, None,
-                      ['Buy Crystals', 'Inventory', 'Explore', 'Upgrade', 'Crafting', 'Spells', 'Quit'])
+                      ['Buy Crystals', 'Inventory', 'Explore', 'Crafting', 'Spells', 'Quit'])
         self.image = pygame.image.load('splash.png')
         self.player = player
         self.world = World()
@@ -24,8 +23,6 @@ class MainMenu(Menu):
             self.child = InventoryMenu(self, self.player)
         elif msg == 'Explore':
             self.child = Explore(self, self.world, self.player)
-        elif msg == 'Upgrade':
-            self.child = UpgradeMenu(self, self.player)
         elif msg == 'Crafting':
             self.child = CraftMenu(self, self.player)
         elif msg == 'Spells':
