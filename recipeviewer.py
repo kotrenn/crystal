@@ -1,9 +1,11 @@
+from crystalsummary import *
 from itemselector import *
 from menu import *
 from recipeparser import *
 from recipewalker import *
 from render import *
 from settings import *
+from spellsummary import *
 from window import *
 
 class RecipeViewer(Window):
@@ -15,8 +17,10 @@ class RecipeViewer(Window):
         self.input_selectors = []
         self.crystal_selector = ItemSelector(self, self.player.crystals)
         self.crystal_selector.selecting = False
+        self.crystal_summary = CrystalSummary()
         self.spell_selector = ItemSelector(self, self.player.spells)
         self.spell_selector.selecting = False
+        self.spell_summary = SpellSummary()
 
         self.build_selectors(self.cost_selectors,
                              self.recipe.cost)
@@ -202,3 +206,19 @@ class RecipeViewer(Window):
             if selector == self.cur_dst:
                 selector.draw_bounds(dst, red, corner, radius, 4)
             corner += selector_skip * selector.visible_rows()
+
+        # draw item info
+        corner += vector(0, 20)
+        item = self.cur_selector.get_selection()
+        if item is None:
+            return
+        summary = None
+        mapping = {
+            'Crystal': self.crystal_summary,
+            'Spell': self.spell_summary
+            }
+        if item.type in mapping:
+            summary = mapping[item.type]
+        if summary is None:
+            return
+        summary.display(dst, item, corner)
