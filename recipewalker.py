@@ -30,15 +30,21 @@ class RecipeWalker(object):
         mapping = {
             'random_pipes': (1, self.func_random_pipes),
             'random_color': (0, self.func_random_color),
+            'get_index': (2, self.func_get_index),
             'sum': (2, self.func_sum),
             'min': (1, self.func_min),
             'add': (2, self.func_add),
             'sub': (2, self.func_sub),
+            'sub_index': (3, self.func_sub_index),
+            'mul': (2, self.func_mul),
             'divide': (2, self.func_divide),
             'eq': (2, self.func_eq),
+            'eq_array': (1, self.func_eq_array),
+            'neq': (2, self.func_neq),
             'lt': (2, self.func_lt),
             'leq': (2, self.func_leq),
             'geq': (2, self.func_geq),
+            'geq_array': (2, self.func_geq_array),
             'randint': (2, self.func_randint),
             'Color': (3, self.func_color),
             'Spell': (1, self.func_spell),
@@ -51,7 +57,8 @@ class RecipeWalker(object):
             'spell_crystals': (1, self.func_spell_crystals),
             'random_attribute': (1, self.func_random_attribute),
             'get_att': (2, self.func_get_att),
-            'set_att': (3, self.func_set_att)
+            'set_att': (3, self.func_set_att),
+            'baseline': (1, self.func_baseline)
             }
         if func_name in mapping:
             return mapping[func_name]
@@ -64,6 +71,8 @@ class RecipeWalker(object):
         if 'str' in classes:
             if val.isdigit():
                 return self.eval_constant(val)
+            elif len(val) >= 2 and val[0] == '\'' and val[-1] == '\'':
+                return self.eval_str(val)
             return self.eval_variable(val, variables, player)
         elif 'FunctionCall' in classes:
             return self.eval_func(val, variables, player)
@@ -72,6 +81,9 @@ class RecipeWalker(object):
 
     def eval_constant(self, val):
         return int(val)
+
+    def eval_str(self, val):
+        return val[1:-1]
 
     def eval_variable(self, var_name, variables, player):
         code = ''
@@ -131,6 +143,7 @@ class RecipeWalker(object):
             code = 'variables[\'' + var_name + '\']'
         code = code + ' = val'
         print 'Generated code: `' + code + '`'
+        print '  val= ' + str(val)
         exec code
 
     def func_random_pipes(self, args, variables, player):
@@ -151,6 +164,11 @@ class RecipeWalker(object):
             color = Color(True, True, True)
         return color
 
+    def func_get_index(self, args, variables, player):
+        lhs = args[0]
+        index = args[1]
+        return lhs[index]
+
     def func_sum(self, args, variables, player):
         return sum(args[0], args[1])
 
@@ -166,6 +184,18 @@ class RecipeWalker(object):
         lhs = args[0]
         rhs = args[1]
         return lhs - rhs
+
+    def func_sub_index(self, args, variables, player):
+        lhs = args[0]
+        index = args[1]
+        rhs = args[2]
+        lhs[index] -= rhs
+        return lhs
+
+    def func_mul(self, args, variables, player):
+        lhs = args[0]
+        rhs = args[1]
+        return lhs * rhs
     
     def func_divide(self, args, variables, player):
         lhs = args[0]
@@ -176,6 +206,18 @@ class RecipeWalker(object):
         lhs = args[0]
         rhs = args[1]
         return lhs == rhs
+
+    def func_eq_array(self, args, variables, player):
+        array = args[0]
+        if len(array) == 0:
+            return True
+        first = array[0]
+        return all([first == x for x in array[1:]])
+
+    def func_neq(self, args, variables, player):
+        lhs = args[0]
+        rhs = args[1]
+        return lhs != rhs
 
     def func_lt(self, args, variables, player):
         lhs = args[0]
@@ -191,6 +233,11 @@ class RecipeWalker(object):
         lhs = args[0]
         rhs = args[1]
         return lhs >= rhs
+
+    def func_geq_array(self, args, variables, player):
+        lhs = args[0]
+        rhs = args[1]
+        return all([lhs >= x for x in rhs])
 
     def func_randint(self, args, variables, player):
         a = args[0]
@@ -311,3 +358,9 @@ class RecipeWalker(object):
         att = args[1]
         val = args[2]
         atts[att] = val
+
+    def func_baseline(self, args, variables, player):
+        color = args[0]
+        for i in range(3):
+            color[i] = max(0, color[i])
+        return color
