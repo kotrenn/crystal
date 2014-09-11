@@ -1,4 +1,4 @@
-from recipeparser import *
+from recipe.recipeparser import *
 
 parser = RecipeParser()
 

@@ -1,7 +1,6 @@
 from crystalsummary import *
 from itemselector import *
 from menu import *
-from recipeparser import *
 from recipewalker import *
 from render import *
 from settings import *

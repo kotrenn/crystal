@@ -1,7 +1,7 @@
 import random
 
 from crystalfactory import *
-from recipeparser import *
+from recipe.recipeparser import *
 from spell import *
 
 class RecipeWalker(object):

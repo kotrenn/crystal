@@ -1,4 +1,4 @@
-from recipeparser import *
+from recipe.recipeparser import *
 from recipeviewer import *
 from menu import *
 

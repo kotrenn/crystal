@@ -1,5 +1,5 @@
-__all__ = ["recipe",
+__all__ = ["functioncall",
+           "recipe",
            "recipeparser",
-           "variable",
-           "functioncall",
-           "statement"]
+           "statement",
+           "variable"]
