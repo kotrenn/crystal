@@ -7,7 +7,7 @@ class GetAction(Action):
         
     def execute(self):
         row, col = self.loc.tuple()
-        items = self.actor.world.items.cells[row][col]
+        items = self.actor.level.items.cells[row][col]
         if len(items) == 0:
             return None
         for item in items:

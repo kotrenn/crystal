@@ -8,11 +8,11 @@ class CastSpellAction(Action):
         self.dir = dir
 
     def execute(self):
-        world = self.actor.world
+        level = self.actor.level
         loc = self.actor.loc
-        vel = world.grid.dir_vel(self.dir)
+        vel = level.grid.dir_vel(self.dir)
         start = loc + vel
-        if world.is_blocked(start):
+        if level.is_blocked(start):
             return
         data = self.spell.get_attack()
         mana = data.atts['Mana']
@@ -26,4 +26,4 @@ class CastSpellAction(Action):
         self.actor.burn_mana(mana)
         if 'Heal' in data.atts:
             self.actor.heal(data.atts['Heal'])
-        projectile = Projectile(world, start, self.dir, data, instant)
+        projectile = Projectile(level, start, self.dir, data, instant)

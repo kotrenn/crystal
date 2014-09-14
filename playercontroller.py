@@ -5,10 +5,10 @@ from talkaction import *
 from walkaction import *
 
 class PlayerController(object):
-    def __init__(self, parent, player, world):
+    def __init__(self, parent, player, level):
         self.player = player
         self.parent = parent
-        self.world = world
+        self.level = level
         parent.add_key_listener(self)
         self.spell_select = False
         self.spell_selection = 0
@@ -53,7 +53,7 @@ class PlayerController(object):
             pygame.K_LEFT: DIR_W,
             pygame.K_RIGHT: DIR_E
         }
-        grid = self.world.grid
+        grid = self.level.grid
 
         if key in mapping:
             dir = mapping[key]
@@ -71,7 +71,7 @@ class PlayerController(object):
                     return
                 self.talk_select = False    
                 loc = grid.move_loc(dir, self.player.loc)
-                target = self.world.actor_at(loc)
+                target = self.level.actor_at(loc)
                 if target is None:
                     return
                 action = TalkAction(self.player, target)

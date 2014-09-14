@@ -9,21 +9,21 @@ from squaregrid import *
 from walkaction import *
 
 class Monster(Actor):
-    def __init__(self, world):
-        Actor.__init__(self, world)
+    def __init__(self, level):
+        Actor.__init__(self, level)
         self.speed = Energy.NORMAL_SPEED
         self.hp = GameStat(1)
-        self.loc = self.world.random_empty()
+        self.loc = self.level.random_empty()
         self.crystal_factory = BasicCrystalFactory()
 
     def get_action(self):
-        dir = self.world.a_star(self.loc, self.world.player.loc)
+        dir = self.level.a_star(self.loc, self.level.player.loc)
         if dir == DIR_NONE:
             return WalkAction(self, dir)
 
-        vel = self.world.grid.dir_vel(dir)
+        vel = self.level.grid.dir_vel(dir)
         new_loc = self.loc + vel
-        if self.world.actor_at(new_loc):
+        if self.level.actor_at(new_loc):
             return WalkAction(self, DIR_NONE)
         
         return WalkAction(self, dir)
@@ -45,5 +45,5 @@ class Monster(Actor):
         if random.randint(1, 3) == 1:
             crystal = self.crystal_factory.make_crystal()
             row, col = self.loc.tuple()
-            self.world.items.cells[row][col].append(crystal)
-        self.loc = self.world.random_empty()
+            self.level.items.cells[row][col].append(crystal)
+        self.loc = self.level.random_empty()

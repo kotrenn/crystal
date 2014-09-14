@@ -8,8 +8,8 @@ from spell import *
 from vector import *
 
 class Player(Actor):
-    def __init__(self, world):
-        Actor.__init__(self, world)
+    def __init__(self, level):
+        Actor.__init__(self, level)
         self.hp = GameStat(20)
         self.mana = [GameStat(10) for _ in range(3)]
         self.mana_gen = Color(1, 1, 1)

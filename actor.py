@@ -5,22 +5,22 @@ from settings import *
 from squaregrid import *
 
 class Actor(object):
-    def __init__(self, world):
+    def __init__(self, level):
         self.loc = vector(0, 0)
-        self.world = world
+        self.level = level
         self.speed = Energy.NORMAL_SPEED
         self.energy = Energy()
-        self.set_world(world)
+        self.set_level(level)
         self.die_at_wall = False
         self.name = 'Actor'
         self.hp = GameStat(0)
 
-    def set_world(self, world):
-        self.world = world
-        if world is None:
+    def set_level(self, level):
+        self.level = level
+        if level is None:
             return
-        if self not in self.world.actors:
-            self.world.actors.append(self)
+        if self not in self.level.actors:
+            self.level.actors.append(self)
 
     def has_class(self, class_name):
         classes = str(type.mro(type(self)))

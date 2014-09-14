@@ -1,32 +1,32 @@
+from levelviewer import *
+from level import *
 from playercontroller import *
 from render import *
 from settings import *
 from window import *
-from worldviewer import *
-from world import *
 
 class Explore(Window):
-    def __init__(self, parent, world, player):
+    def __init__(self, parent, level, player):
         Window.__init__(self, parent)
-        self.world = world
-        self.world_viewer = WorldViewer(world)
+        self.level = level
+        self.level_viewer = LevelViewer(level)
         self.player = player
-        self.player.set_world(world)
-        self.player_controller = PlayerController(self, player, world)
-        self.world.player = player
+        self.player.set_level(level)
+        self.player_controller = PlayerController(self, player, level)
+        self.level.player = player
         self.current_actor = 0
         self.camera_pos = vector(0, 0)
         self.camera_dims = vector(12, 17)
 
     def advance_actor(self):
-        num_actors = len(self.world.actors)
+        num_actors = len(self.level.actors)
         self.current_actor = (self.current_actor + 1) % num_actors
 
     def update(self):
         action = None
         actor = None
         while action is None:
-            actor = self.world.actors[self.current_actor]
+            actor = self.level.actors[self.current_actor]
             if actor.energy.can_take_turn() and actor.needs_input():
                 return
             if actor.energy.can_take_turn() or \
@@ -47,8 +47,8 @@ class Explore(Window):
         dims = self.camera_dims
         min_row = 0
         min_col = 0
-        max_row = self.world.grid.num_rows() - dims[0]
-        max_col = self.world.grid.num_cols() - dims[1]
+        max_row = self.level.grid.num_rows() - dims[0]
+        max_col = self.level.grid.num_cols() - dims[1]
         if loc[0] < min_row: loc[0] = min_row
         if loc[1] < min_col: loc[1] = min_col
         if loc[0] > max_row: loc[0] = max_row
@@ -63,19 +63,19 @@ class Explore(Window):
             loc[1] < col1
         
     def display(self, dst):
-        self.world_viewer.display(dst, self.camera_pos, self.camera_dims)
+        self.level_viewer.display(dst, self.camera_pos, self.camera_dims)
 
         # compute offset for the actor list
         settings = Settings()
         dims = vector(self.camera_dims[1], 0)
-        text_offset = dims % self.world_viewer.tile_size
+        text_offset = dims % self.level_viewer.tile_size
         text_offset += vector(20, 0)
 
         # draw actors and their info
-        for (i, actor) in enumerate(self.world.actors):
+        for (i, actor) in enumerate(self.level.actors):
             # draw the actor
             loc = actor.loc - self.camera_pos
-            pos = self.world_viewer.grid_viewer.get_center(loc)
+            pos = self.level_viewer.grid_viewer.get_center(loc)
             if not self.in_bounds(actor.loc):
                 continue
             actor.display(dst, pos)
@@ -91,7 +91,7 @@ class Explore(Window):
         player = self.player
         player_controller = self.player_controller
         dims = vector(0, self.camera_dims[0])
-        text_offset = dims % self.world_viewer.tile_size
+        text_offset = dims % self.level_viewer.tile_size
         text_offset += vector(20, 20)
         white = (255, 255, 255)
         red = (255, 0, 0)

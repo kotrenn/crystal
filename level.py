@@ -8,7 +8,7 @@ from npc import *
 from squaregrid import *
 from vector import *
 
-class World(object):
+class Level(object):
     def __init__(self):
         self.dims = vector(12, 17)
         #self.dims = vector(20, 20)
@@ -101,8 +101,8 @@ class World(object):
         offset = (dst - loc).abs()
         num_diagonal = min(offset.list())
         num_straight = max(offset.list()) - num_diagonal
-        return num_diagonal * World.Node.FLOOR_COST + \
-            num_straight * World.Node.STRAIGHT_COST
+        return num_diagonal * Level.Node.FLOOR_COST + \
+            num_straight * Level.Node.STRAIGHT_COST
 
     def a_star(self, src, dst):
         # set up initial stuff
@@ -110,7 +110,7 @@ class World(object):
         dirs = [DIR_NW, DIR_N, DIR_NE, DIR_E,
                 DIR_SE, DIR_S, DIR_SW, DIR_W]
         dist = self.heuristic(src, dst)
-        start_node = World.Node(src, DIR_NONE, 0, dist)
+        start_node = Level.Node(src, DIR_NONE, 0, dist)
         q = [(dist, 0, start_node)]
         count = 1
         finished = set([])
@@ -143,17 +143,17 @@ class World(object):
                     new_dir = dir
                 
                 # compute the cost of moving to this node
-                move_cost = World.Node.FLOOR_COST
+                move_cost = Level.Node.FLOOR_COST
                 ortho = [DIR_N, DIR_E, DIR_S, DIR_W]
                 if dir in ortho:
-                    move_cost = World.Node.STRAIGHT_COST
+                    move_cost = Level.Node.STRAIGHT_COST
                 if self.actor_at(new_loc):
-                    move_cost = World.Node.OCCUPIED_COST
+                    move_cost = Level.Node.OCCUPIED_COST
 
                 # set up the new node
                 new_cost = cur.cost + move_cost
                 new_heur = self.heuristic(new_loc, dst)
-                new_node = World.Node(new_loc, new_dir,
+                new_node = Level.Node(new_loc, new_dir,
                                       new_cost, new_heur)
 
                 # insert new node into q
