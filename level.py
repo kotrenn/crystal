@@ -14,7 +14,7 @@ class Level(object):
     def __init__(self):
         self.dims = vector(12, 17)
         #self.dims = vector(20, 20)
-        #self.dims = vector(100, 100)
+        self.dims = vector(200, 200)
         #self.dims = vector(12, 50)
         random.seed(4200)
         self.tiles = {
@@ -29,7 +29,7 @@ class Level(object):
 
         for row in range(self.dims[0]):
             for col in range(self.dims[1]):
-                if random.randint(1, 10) <= 3:
+                if random.randint(1, 10) <= 1:
                     self.grid.cells[row][col] = self.tiles['tree']
                 else:
                     self.grid.cells[row][col] = self.tiles['blank']
@@ -53,7 +53,8 @@ class Level(object):
     def profile(self):
         #initialize stuff
         src = vector(0, 0)
-        dst = vector(self.dims[0] - 1, self.dims[1] - 1)
+        #dst = vector(self.dims[0] - 1, self.dims[1] - 1)
+        dst = self.random_empty()
         
         pr = cProfile.Profile()
         pr.enable()
@@ -68,7 +69,7 @@ class Level(object):
         ps.print_stats()
         ps.print_callers()
 
-        print 'ret = ' + str(ret)
+        print 'ret = ' + str(ret) + ' [' + str(src) + ' ==> ' + str(dst) + ']'
 
     def find_components(self):
         grid = self.component
@@ -82,19 +83,23 @@ class Level(object):
                 self.component_dfs(loc, cur_component)
                 cur_component += 1
 
-    def component_dfs(self, loc, cur_component):
+    def component_dfs(self, start_loc, cur_component):
         grid = self.component
-        row, col = loc.tuple()
-        if self.is_blocked(loc):
-            return
-        if grid.cells[row][col] >= 0:
-            return
-        grid.cells[row][col] = cur_component
         dirs = [DIR_NW, DIR_N, DIR_NE, DIR_E,
                 DIR_SE, DIR_S, DIR_SW, DIR_W]
-        for dir in dirs:
-            new_loc = grid.move_loc(dir, loc)
-            self.component_dfs(new_loc, cur_component)
+
+        q = [start_loc]
+        while len(q) > 0:
+            loc = q.pop()
+            row, col = loc.tuple()
+            if self.is_blocked(loc):
+                continue
+            if grid.cells[row][col] >= 0:
+                continue
+            grid.cells[row][col] = cur_component
+            for dir in dirs:
+                new_loc = grid.move_loc(dir, loc)
+                q.append(new_loc)
 
     def get_component(self, loc):
         row, col = loc.tuple()
