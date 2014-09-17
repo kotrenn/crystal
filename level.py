@@ -24,6 +24,7 @@ class Level(object):
         self.tiles = {k: vector(v) for (k, v) in self.tiles.iteritems()}
         self.grid = SquareGrid(self.dims)
         self.items = SquareGrid(self.dims)
+        self.component = SquareGrid(self.dims)
         self.heuristic_cost = {}
 
         for row in range(self.dims[0]):
@@ -33,12 +34,14 @@ class Level(object):
                 else:
                     self.grid.cells[row][col] = self.tiles['blank']
                 self.items.cells[row][col] = []
-
+                
         # create a row of trees (for testing)
 #         for row in range(self.dims[0]):
 #             self.grid.cells[row][0] = self.tiles['blank']
 #             self.grid.cells[row][1] = self.tiles['tree']
 #         self.grid.cells[self.dims[0] - 1][1] = self.tiles['blank']
+
+        self.find_components()
 
         self.actors = []
         self.actors = [Monster(self) for _ in range(5)]
@@ -66,6 +69,42 @@ class Level(object):
         ps.print_callers()
 
         print 'ret = ' + str(ret)
+
+    def find_components(self):
+        grid = self.component
+        for row in range(grid.num_rows()):
+            for col in range(grid.num_cols()):
+                grid.cells[row][col] = -1
+        cur_component = 0
+        for row in range(grid.num_rows()):
+            for col in range(grid.num_cols()):
+                loc = vector(row, col)
+                self.component_dfs(loc, cur_component)
+                cur_component += 1
+
+    def component_dfs(self, loc, cur_component):
+        grid = self.component
+        row, col = loc.tuple()
+        if self.is_blocked(loc):
+            return
+        if grid.cells[row][col] >= 0:
+            return
+        grid.cells[row][col] = cur_component
+        dirs = [DIR_NW, DIR_N, DIR_NE, DIR_E,
+                DIR_SE, DIR_S, DIR_SW, DIR_W]
+        for dir in dirs:
+            new_loc = grid.move_loc(dir, loc)
+            self.component_dfs(new_loc, cur_component)
+
+    def get_component(self, loc):
+        row, col = loc.tuple()
+        return self.component.cells[row][col]
+
+    def different_components(self, src, dst):
+        comp_src = self.get_component(src)
+        comp_dst = self.get_component(dst)
+        return comp_src < 0 or comp_dst < 0 or \
+            comp_src != comp_dst
 
     def remove_actor(self, actor):
         if not actor in self.actors:
@@ -141,6 +180,10 @@ class Level(object):
         return ret
 
     def a_star(self, src, dst):
+        # make sure we're in the same component
+        if self.different_components(src, dst):
+            return DIR_NONE
+        
         # set up initial stuff
         self.heuristic_cost = {}
         grid = self.grid
