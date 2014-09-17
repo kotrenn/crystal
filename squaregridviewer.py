@@ -15,6 +15,7 @@ class SquareGridViewer(object):
         return offset
 
     def display(self, dst):
+        return
         dims = vector(self.cell_w, self.cell_h)
         white = (255, 255, 255)
         for row in range(self.grid.num_rows()):
@@ -32,4 +33,4 @@ class SquareGridViewer(object):
             pos = vector(p)
             point = center + pos % dims
             final.append(point.list())
-        #pygame.draw.polygon(dst, color, final, 1)
+        pygame.draw.polygon(dst, color, final, 1)

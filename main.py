@@ -1,8 +1,13 @@
 import pygame
+import cProfile
+import pstats
+
+from init import *
 from mainmenu import *
 from player import *
 from settings import *
-from init import *
+
+PROFILE = False
 
 def main():
     black = (0, 0, 0)
@@ -17,6 +22,10 @@ def main():
     player = Player(None)
     window = MainMenu(player)
 
+    if PROFILE:
+        pr = cProfile.Profile()
+        pr.enable()
+        
     running = True
     while running:
         for event in pygame.event.get():
@@ -38,6 +47,13 @@ def main():
             window = window.parent
             if window is None:
                 running = False
+
+    if PROFILE:
+        pr.disable()
+        sort_by = 'cumulative'
+        ps = pstats.Stats(pr).strip_dirs().sort_stats(sort_by)
+        ps.print_stats()
+        ps.print_callers()
 
     pygame.quit()
 

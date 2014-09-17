@@ -51,7 +51,7 @@ class Spell(object):
         cycle = False
         while len(q) > 0:
             cur = q.pop(0)
-            row1, col1 = cur
+            row1, col1 = cur.tuple()
             if cur.list() in visited:
                 cycle = True
                 continue
@@ -62,7 +62,7 @@ class Spell(object):
                 loc = grid.move_loc(dir, cur)
                 if grid.out_of_bounds(loc):
                     continue
-                row2, col2 = loc
+                row2, col2 = loc.tuple()
                 c2 = grid.cells[row2][col2]
                 if c2 is None:
                     continue
