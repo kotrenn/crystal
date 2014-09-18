@@ -14,7 +14,7 @@ class Level(object):
     def __init__(self):
         self.dims = vector(12, 17)
         #self.dims = vector(20, 20)
-        self.dims = vector(200, 200)
+        #self.dims = vector(200, 200)
         #self.dims = vector(12, 50)
         random.seed(4200)
         self.tiles = {
@@ -29,7 +29,7 @@ class Level(object):
 
         for row in range(self.dims[0]):
             for col in range(self.dims[1]):
-                if random.randint(1, 10) <= 1:
+                if random.randint(1, 10) <= 3:
                     self.grid.cells[row][col] = self.tiles['tree']
                 else:
                     self.grid.cells[row][col] = self.tiles['blank']
