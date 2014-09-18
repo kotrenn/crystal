@@ -135,3 +135,12 @@ class World(object):
                     continue
                 ret.append((i, j))
         return ret
+
+    def neighbors(self, i):
+        ret = []
+        for (u, v) in self.edges:
+            if u == i:
+                ret.append(v)
+            elif v == i:
+                ret.append(u)
+        return ret
