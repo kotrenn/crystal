@@ -20,7 +20,6 @@ class WorldViewer(Window):
 
         if key in mapping:
             vel = vector(mapping[key])
-            vel = vel.norm()
             neighbors = self.world.neighbors(self.selection)
             p0 = self.world.points[self.selection]
             cur_best = None
