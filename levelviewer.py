@@ -28,7 +28,6 @@ class LevelViewer(object):
                 dst.blit(self.tile_sheet, pos.list(), tile_bounds)
 
                 for crystal in self.level.items.cells[row][col]:
-                    grid_viewer
-                    center = corner + grid_viewer.get_center((row, col))
+                    center = grid_viewer.get_center((row - row0, col - col0))
                     radius = 0.25 * grid_viewer.cell_w
                     crystal.display(dst, center, radius)
