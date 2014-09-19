@@ -53,6 +53,7 @@ class Level(object):
         self.actors = [Monster(self) for _ in range(5)]
         self.actors.append(NPC(self))
         self.player = None
+        self.warps = []
 
         #self.profile()
 
@@ -76,6 +77,15 @@ class Level(object):
         ps.print_callers()
 
         print 'ret = ' + str(ret) + ' [' + str(src) + ' ==> ' + str(dst) + ']'
+
+    def add_warp(self, src, dst):
+        self.warps.append((src, dst))
+
+    def get_warp(self, loc):
+        for (src, dst) in self.warps:
+            if src == loc:
+                return dst
+        return None
 
     def find_components(self):
         grid = self.component

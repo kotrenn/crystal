@@ -6,7 +6,7 @@ from vector import *
 
 class World(object):
     def __init__(self, width, height):
-        self.dims = [width, height]
+        self.dims = vector(width, height)
 
         self.points = []
         self.edges = []
@@ -17,7 +17,13 @@ class World(object):
         self.edges = self.build_edges(self.euclid)
 
         self.generator = ForestGenerator()
-        self.levels = [self.build_level(i) for i in range(len(self.points))]
+        n = len(self.points)
+        level_dims = vector(12, 17)
+        self.levels = [Level(level_dims) for i in range(n)]
+        for i in range(n):
+            self.build_level(i)
+
+        self.connect_levels()
 
     def out_of_bounds(self, p):
         return p.x < 0 or p.y < 0 or \
@@ -149,6 +155,7 @@ class World(object):
         return ret
 
     def build_level(self, i):
+        level = self.levels[i]
         p = self.points[i]
         neighbors = self.neighbors(i)
         vectors = []
@@ -156,4 +163,39 @@ class World(object):
             q = self.points[j]
             delta = (q - p).norm()
             vectors.append(delta)
-        return self.generator.make_level(vectors)
+        neighbors = [self.levels[v] for v in neighbors]
+        return self.generator.make_level(level, vectors, neighbors)
+
+    def connect_levels(self):
+        for (i, j) in self.edges:
+            self.add_warp(i, j)
+            self.add_warp(j, i)
+
+    def add_warp(self, i, j):
+        level_i = self.levels[i]
+        level_j = self.levels[j]
+        warps_i = level_i.warps
+        warps_j = level_j.warps
+        the_neighbor = None
+
+        new_i = []
+        for (src, dst) in warps_i:
+            level, loc = dst
+            if level is level_j:
+                continue
+            new_i.append((src, dst))
+
+        for (src, dst) in warps_j:
+            neighbor, loc = dst
+            if neighbor is not level_i:
+                continue
+
+            new_src = None
+            for (src_i, dst_i) in warps_i:
+                if dst_i[0] is level_j:
+                    new_src = src_i
+                    break
+            new_dst = (level_j, src)
+            new_i.append((new_src, new_dst))
+
+        level_i.warps = new_i

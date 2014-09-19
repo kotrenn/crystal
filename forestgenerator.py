@@ -5,9 +5,8 @@ class ForestGenerator(object):
         x = 3
 
     # assumes vectors are unit length
-    def make_level(self, vectors):
+    def make_level(self, level, vectors, neighbors):
         dims = vector(12, 17)
-        level = Level(dims)
 
         # add tree border
         for row in range(dims[0]):
@@ -18,10 +17,13 @@ class ForestGenerator(object):
             level.grid.cells[dims[0] - 1][col] = level.tiles['tree']
 
         # clear holes for neighboring locations
-        for vec in vectors:
+        for (vec, neighbor) in zip(vectors, neighbors):
             p = self.get_intersection(dims, vec)
             self.clear_tile(level, p)
             self.process_corner(level, p)
+
+            # add warp to neighbor with unknown location
+            self.add_warp(level, neighbor, p)
 
         return level
 
@@ -98,3 +100,7 @@ class ForestGenerator(object):
     def clear_tile(self, level, p):
         row, col = p.list()
         level.grid.cells[row][col] = level.tiles['blank']
+
+    def add_warp(self, level, neighbor, p):
+        dst = (neighbor, None)
+        level.add_warp(p, dst)

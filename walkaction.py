@@ -19,5 +19,5 @@ class WalkAction(Action):
             if action is not None:
                 ret = action.execute()
             return ret
-        self.actor.loc = loc
+        self.actor.walk_to(loc, vel)
         return self.actor

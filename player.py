@@ -19,6 +19,7 @@ class Player(Actor):
             self.spells.append(Spell(self, size))
         self.next_action = None
         self.heal_timer = 0
+        self.warp_to = None
 
         # create the initial basic melee spell
         basic = self.spells[0]
@@ -63,3 +64,11 @@ class Player(Actor):
         spell = self.spells[0]
         action = CastSpellAction(self, spell, dir)
         return action
+
+    def walk_to(self, loc, vel):
+        Actor.walk_to(self, loc, vel)
+
+        warp = self.level.get_warp(loc)
+        if warp is None:
+            return
+        self.warp_to = warp

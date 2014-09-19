@@ -52,6 +52,12 @@ class Explore(Window):
         self.update_camera()
         self.advance_actor()
 
+        if self.player.warp_to is not None:
+            level, loc = self.player.warp_to
+            self.move_to(level, loc)
+            self.player.warp_to = None
+            self.player.loc += self.player.prev_vel
+
     def update_camera(self):
         loc = self.player.loc - self.camera_dims / 2
         dims = self.camera_dims

@@ -7,6 +7,7 @@ from squaregrid import *
 class Actor(object):
     def __init__(self, level):
         self.loc = vector(0, 0)
+        self.prev_vel = vector(0, 0)
         self.level = level
         self.speed = Energy.NORMAL_SPEED
         self.energy = Energy()
@@ -59,6 +60,10 @@ class Actor(object):
 
     def get_speed(self):
         return self.speed
+
+    def walk_to(self, loc, vel):
+        self.loc = loc
+        self.prev_vel = vel
 
     def display(self, dst, center):
         settings = Settings()
