@@ -84,7 +84,7 @@ class SpellEditor(SpellViewer):
                 selector.remove_selection()
                 grid.cells[row][col] = crystal
         if key == pygame.K_v:
-            row, col = self.select
+            row, col = self.select.list()
             grid = self.spell.grid
             if grid.cells[row][col] is not None:
                 crystal = grid.cells[row][col]

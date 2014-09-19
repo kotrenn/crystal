@@ -73,7 +73,7 @@ class ItemSelector(object):
             self.selection = loc
 
     def get_offset(self):
-        c_row, c_col = self.selection[::-1]
+        c_row, c_col = self.selection.transpose().tuple()
         sel = c_row * self.num_cols + c_col
         return sel
 
