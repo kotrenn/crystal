@@ -8,15 +8,25 @@ from window import *
 class Explore(Window):
     def __init__(self, parent, level, player):
         Window.__init__(self, parent)
-        self.level = level
-        self.level_viewer = LevelViewer(level)
-        self.player = player
-        self.player.set_level(level)
-        self.player_controller = PlayerController(self, player, level)
-        self.level.player = player
-        self.current_actor = 0
+        
         self.camera_pos = vector(0, 0)
         self.camera_dims = vector(12, 17)
+        self.player = player
+        
+        self.move_to(level, vector(0, 0))
+        self.reset_current_actor()
+
+    def move_to(self, level, loc):
+        self.level = level
+        self.level_viewer = LevelViewer(level)
+        self.level.player = self.player
+        self.player.set_level(level)
+        self.player.loc = loc
+        self.player_controller = PlayerController(self, self.player, level)
+        self.update_camera()
+
+    def reset_current_actor(self):
+        self.current_actor = self.level.actors.index(self.player)
 
     def advance_actor(self):
         num_actors = len(self.level.actors)
