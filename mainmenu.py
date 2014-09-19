@@ -14,8 +14,8 @@ class MainMenu(Menu):
                       ['Buy Crystals', 'Inventory', 'Explore', 'Crafting', 'Spells', 'World', 'Quit'])
         self.image = pygame.image.load('splash.png')
         self.player = player
-        self.level = Level()
-        self.world = World(800, 600, 100)
+        self.level = Level(vector(12, 17))
+        self.world = World(800, 600)
 
     def select(self, msg):
         if msg == 'Quit':
@@ -31,7 +31,7 @@ class MainMenu(Menu):
         elif msg == 'Spells':
             self.child = SpellMenu(self, self.player)
         elif msg == 'World':
-            self.child = WorldViewer(self, self.world)
+            self.child = WorldViewer(self, self.world, self.player)
 
     def render_image(self):
         return self.image

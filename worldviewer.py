@@ -1,16 +1,26 @@
 import pygame
 
+from explore import *
+from menu import *
 from window import *
 from world import *
 
 class WorldViewer(Window):
-    def __init__(self, parent, world):
+    def __init__(self, parent, world, player):
         Window.__init__(self, parent)
         self.world = world
+        self.player = player
 
         self.selection = 0
 
-    def key_pressed(self, key):
+    def key_released(self, key):
+        Window.key_released(self, key)
+
+        if key in Menu.select_keys:
+            level = self.world.levels[self.selection]
+            self.child = Explore(self, level, self.player)
+            return
+        
         mapping = {
             pygame.K_UP:    [0, -1],
             pygame.K_DOWN:  [0, 1],

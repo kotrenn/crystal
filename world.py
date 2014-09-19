@@ -1,10 +1,11 @@
 import math
 import random
 
+from forestgenerator import *
 from vector import *
 
 class World(object):
-    def __init__(self, width, height, num_points):
+    def __init__(self, width, height):
         self.dims = [width, height]
 
         self.points = []
@@ -14,6 +15,9 @@ class World(object):
         self.bridson(width / 12)
 
         self.edges = self.build_edges(self.euclid)
+
+        self.generator = ForestGenerator()
+        self.levels = [self.build_level(i) for i in range(len(self.points))]
 
     def out_of_bounds(self, p):
         return p.x < 0 or p.y < 0 or \
@@ -39,7 +43,6 @@ class World(object):
         points = []
 
         while len(active) > 0:
-            print 'len(active) = ' + str(len(active))
             cur = random.choice(active)
             found = False
             for _ in range(max_samples):
@@ -144,3 +147,13 @@ class World(object):
             elif v == i:
                 ret.append(u)
         return ret
+
+    def build_level(self, i):
+        p = self.points[i]
+        neighbors = self.neighbors(i)
+        vectors = []
+        for j in neighbors:
+            q = self.points[j]
+            delta = (q - p).norm()
+            vectors.append(delta)
+        return self.generator.make_level(vectors)
