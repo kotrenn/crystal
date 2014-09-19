@@ -13,7 +13,7 @@ class Explore(Window):
         self.camera_dims = vector(12, 17)
         self.player = player
         
-        self.move_to(level, vector(0, 0))
+        self.move_to(level, level.dims / 2)
         self.reset_current_actor()
 
     def move_to(self, level, loc):

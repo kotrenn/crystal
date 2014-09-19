@@ -12,6 +12,7 @@ class WorldViewer(Window):
         self.player = player
 
         self.selection = 0
+        self.locate_player = False
 
     def key_released(self, key):
         Window.key_released(self, key)
@@ -19,6 +20,7 @@ class WorldViewer(Window):
         if key in Menu.select_keys:
             level = self.world.levels[self.selection]
             self.child = Explore(self, level, self.player)
+            self.locate_player = True
             return
         
         mapping = {
@@ -45,6 +47,15 @@ class WorldViewer(Window):
                     max_proj = proj
             if cur_best is not None:
                 self.selection = cur_best
+
+    def update(self):
+        Window.update(self)
+
+        if self.locate_player and self.child is None:
+            for (i, level) in enumerate(self.world.levels):
+                if level == self.player.level:
+                    self.selection = i
+            self.locate_player = False
         
     def display(self, dst):
         world = self.world
