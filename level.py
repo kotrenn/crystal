@@ -11,8 +11,9 @@ from squaregrid import *
 from vector import *
 
 class Level(object):
-    def __init__(self):
-        self.dims = vector(12, 17)
+    def __init__(self, dims):
+        self.dims = dims
+        #self.dims = vector(12, 17)
         #self.dims = vector(20, 20)
         #self.dims = vector(200, 200)
         #self.dims = vector(12, 50)
@@ -29,11 +30,16 @@ class Level(object):
 
         for row in range(self.dims[0]):
             for col in range(self.dims[1]):
-                if random.randint(1, 10) <= 3:
-                    self.grid.cells[row][col] = self.tiles['tree']
-                else:
-                    self.grid.cells[row][col] = self.tiles['blank']
+                self.grid.cells[row][col] = self.tiles['blank']
                 self.items.cells[row][col] = []
+                
+#         for row in range(self.dims[0]):
+#             for col in range(self.dims[1]):
+#                 if random.randint(1, 10) <= 1:
+#                     self.grid.cells[row][col] = self.tiles['tree']
+#                 else:
+#                     self.grid.cells[row][col] = self.tiles['blank']
+#                 self.items.cells[row][col] = []
                 
         # create a row of trees (for testing)
 #         for row in range(self.dims[0]):
