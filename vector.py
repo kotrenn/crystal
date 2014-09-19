@@ -89,7 +89,7 @@ class vector(object):
     # rotate about the origin by angle theta (in degrees)
     def rotate(self, theta):
         x, y = self.x, self.y
-        theta *= 2.0 * math.pi / 180.0
+        theta *= math.pi / 180.0
         self.x = math.cos(theta) * x - math.sin(theta) * y
         self.y = math.sin(theta) * x + math.cos(theta) * y
         return self

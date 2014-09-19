@@ -62,7 +62,7 @@ class Crystal(object):
             r2 = 0.8 * r
             if pipe == 'Out':
                 r1, r2 = r2, r1
-            phi = 5
+            phi = 10
             p0 = center + r1 * t
             p1 = center + (r2 * t).rotate(-phi)
             p2 = center + (r2 * t).rotate(phi)
