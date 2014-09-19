@@ -18,6 +18,7 @@ class CrystalFactory(object):
 
         # scale to total of 6 and ensure at least one input
         if num_in < 1: num_in = 1
+        if num_out < 0: num_out = 0
         total = num_in + num_out
         if total > 6:
             num_in = 6 * num_in / total
@@ -30,6 +31,8 @@ class CrystalFactory(object):
         ret += ['Out'] * num_out
         ret += [None] * (6 - total)
         random.shuffle(ret)
+        if len(ret) != 6:
+            print 'ERROR: ' + str(ret) + ' ' + str(old)
         return ret
 
 class BasicCrystalFactory(CrystalFactory):
