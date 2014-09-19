@@ -12,18 +12,23 @@ class World(object):
         self.edges = []
 
         #self.uniform(num_points)
+        print 'Generating nodes...'
         self.bridson(width / 12)
 
+        n = len(self.points)
+        print 'Connecting ' + str(n) + ' nodes...'
         self.edges = self.build_edges(self.euclid)
 
         self.generator = ForestGenerator()
-        n = len(self.points)
         level_dims = vector(12, 17)
+        print 'Building levels...'
         self.levels = [Level(level_dims) for i in range(n)]
         for i in range(n):
             self.build_level(i)
 
+        print 'Connecting levels...'
         self.connect_levels()
+        print 'World generation done!'
 
     def out_of_bounds(self, p):
         return p.x < 0 or p.y < 0 or \
@@ -123,7 +128,6 @@ class World(object):
         # basic way to compute relative nearest neighbor
         ret = []
         n = len(self.points)
-        print 'n = ' + str(n)
         for i in range(n):
             p_i = self.points[i]
             for j in range(i + 1, n):

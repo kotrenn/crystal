@@ -13,11 +13,10 @@ def main():
     black = (0, 0, 0)
     size = width, height = 800, 600
 
+    print 'Initializing pygame...'
     screen = init(size)
 
     settings = Settings()
-    global_font = pygame.font.Font(pygame.font.get_default_font(),
-                                   settings.FONT_SIZE)
 
     player = Player(None)
     window = MainMenu(player)

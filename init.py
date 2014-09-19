@@ -8,7 +8,8 @@ def init(size):
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption('crystal')
     pygame.font.init()
-    
+
+    print 'Initializing settings...'
     settings = Settings()
 
     return screen
