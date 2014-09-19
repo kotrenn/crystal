@@ -6,7 +6,7 @@ class ForestGenerator(object):
 
     # assumes vectors are unit length
     def make_level(self, level, vectors, neighbors):
-        dims = vector(12, 17)
+        dims = level.dims
 
         # add tree border
         for row in range(dims[0]):
