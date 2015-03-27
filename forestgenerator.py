@@ -1,14 +1,22 @@
+# Class for generating a simple forest for a level.  Currently surrounds the
+# region in trees and draws simple stone paths between exits.
+
 from level import *
 
 class ForestGenerator(object):
+    # Dummy code
     def __init__(self):
         x = 3
 
-    # assumes vectors are unit length
+    # Build a level given parameters:
+    #   level     - The Level object to populate
+    #   vectors   - Unit length vectors in the direction of neighbors
+    #   neighbors - Corresponding neighbors (matches up with vectors)
+    # Assumes vectors are unit length
     def make_level(self, level, vectors, neighbors):
         dims = level.dims
 
-        # add tree border
+        # Add tree border
         for row in range(dims[0]):
             level.grid.cells[row][0] = level.tiles['tree']
             level.grid.cells[row][dims[1] - 1] = level.tiles['tree']
@@ -16,36 +24,37 @@ class ForestGenerator(object):
             level.grid.cells[0][col] = level.tiles['tree']
             level.grid.cells[dims[0] - 1][col] = level.tiles['tree']
 
-        # clear holes for neighboring locations
+        # Clear holes for neighboring locations
         for (vec, neighbor) in zip(vectors, neighbors):
             p = self.get_intersection(dims, vec)
             self.clear_tile(level, p)
             self.process_corner(level, p)
 
-            # add warp to neighbor with unknown location
+            # Add warp to neighbor with unknown location within the Level
             self.add_warp(level, neighbor, p)
 
         return level
 
+    # Compute the intersection of a vector vec with the border of the Level.
+    # Used for determining where to insert holes in the border for paths to
+    # neighboring locations.
     def get_intersection(self, dims, vec):
-        # deal with transpose stuff for
-        # real world -> level coords
+        # Deal with transpose stuff for overworld coords -> level coords
         vec = vec.transpose()
         
-        # convert to unit coordinates
+        # Convert to unit coordinates
         w, h = map(float, (dims - vector(1, 1)).list())
         center = vector(w, h) / 2
         w2, h2 = center.list()
         new_vec = vector(vec.x / w2, vec.y / h2).norm()
 
-        # rotate 45 degrees
+        # Rotate 45 degrees
         rot_vec = vector(new_vec).rotate(-45)
 
-        # determine which quadrant we're in
-        # and compute the scaling ratio for
+        # Determine which quadrant we're in and compute the scaling ratio for
         # the unit square
         scale = None
-        if rot_vec.x < 0: #north, west
+        if rot_vec.x < 0: # north, west
             if rot_vec.y < 0: # north
                 scale = -1 / new_vec.y
             else: # west
@@ -56,21 +65,25 @@ class ForestGenerator(object):
             else: # south
                 scale = 1 / new_vec.y
 
-        # now compute the intersection point
+        # Now compute the intersection point
         intersection = scale * new_vec
 
-        # convert back to original coordinates
+        # Convert back to original coordinates
         intersection %= center
 
-        # add in center
+        # Add in center
         intersection += center
 
-        # return tile coord
+        # Return coordinate of the tile to erase
         row, col = map(int, map(round, intersection.list()))
         return vector(row, col)
 
+    # If we created a hole in a corner, then we need to clear out neighboring
+    # trees so players can reach the corner.
     def process_corner(self, level, p):
         dims = level.dims
+        
+        # Initialize lots of helper variables
         x0 = y0 = 0
         x1 = dims[0] - 1
         y1 = dims[1] - 1
@@ -84,6 +97,8 @@ class ForestGenerator(object):
         left = vector(-1, 0)
         right = vector(1, 0)
 
+        # For each corner in the Level, if the current point matches up, clear
+        # out the neighboring two cells.
         if p == tl:
             self.clear_tile(level, tl + right)
             self.clear_tile(level, tl + down)
@@ -97,10 +112,12 @@ class ForestGenerator(object):
             self.clear_tile(level, br + left)
             self.clear_tile(level, br + up)
 
+    # Remove any trees from the given cell p
     def clear_tile(self, level, p):
         row, col = p.list()
         level.grid.cells[row][col] = level.tiles['blank']
 
+    # Add in a Warp for movement between locations
     def add_warp(self, level, neighbor, p):
         dst = (neighbor, None)
         level.add_warp(p, dst)
